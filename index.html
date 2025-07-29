@@ -611,13 +611,23 @@
             left: 0;
         }
         
-        .hero-widget-frame {
+        .hero-widget-container {
             width: 100%;
             max-width: 650px;
             height: 700px;
-            border: none;
-            padding: 0 25px;
+            overflow: hidden;
+            border-radius: 1rem;
+            position: relative;
             box-sizing: border-box;
+        }
+        
+        .hero-widget-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
         
         /* Demo widget containers - with padding for component shadows */
@@ -626,6 +636,13 @@
             max-width: 650px; /* Extra space for shadows */
             padding: 0;
             box-sizing: border-box;
+            position: relative;
+            background: transparent;
+        }
+        
+        .demo-widget-inner {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             border-radius: 1rem;
             position: relative;
@@ -681,7 +698,9 @@
                 </div>
             </div>
             <div class="hero-widget">
-                <iframe src="components/main-chat-responsive.html" class="hero-widget-frame" scrolling="no"></iframe>
+                <div class="hero-widget-container">
+                    <iframe src="components/main-chat-responsive.html" class="hero-widget-frame" scrolling="no"></iframe>
+                </div>
             </div>
         </div>
     </section>
@@ -773,7 +792,9 @@
                     <p>Ask questions about competitors and get instant insights with actionable recommendations.</p>
                     <div class="demo-widget-wrapper chat-widget-wrapper">
                         <div class="demo-widget-container">
-                            <iframe src="components/chat-animation-short-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            <div class="demo-widget-inner">
+                                <iframe src="components/chat-animation-short-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -783,7 +804,9 @@
                     <p>Stay informed with automated competitive intelligence summaries delivered to your inbox.</p>
                     <div class="demo-widget-wrapper email-widget-wrapper">
                         <div class="demo-widget-container">
-                            <iframe src="components/digest-email-animation-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            <div class="demo-widget-inner">
+                                <iframe src="components/digest-email-animation-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -793,7 +816,9 @@
                     <p>Create and update sales battlecards automatically based on latest competitive data.</p>
                     <div class="demo-widget-wrapper battlecard-widget-wrapper">
                         <div class="demo-widget-container">
-                            <iframe src="components/battlecard-generation-animation-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            <div class="demo-widget-inner">
+                                <iframe src="components/battlecard-generation-animation-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -803,7 +828,9 @@
                     <p>Connect all your data sources for comprehensive competitive intelligence coverage.</p>
                     <div class="demo-widget-wrapper data-widget-wrapper">
                         <div class="demo-widget-container">
-                            <iframe src="components/data-convergence-animation-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            <div class="demo-widget-inner">
+                                <iframe src="components/data-convergence-animation-responsive.html" class="widget-iframe" scrolling="no"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
