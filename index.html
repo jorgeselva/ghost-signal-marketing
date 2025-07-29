@@ -606,8 +606,9 @@
             height: 100%;
             border: none;
             display: block;
-            border-radius: 1rem;
-            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
         
         .hero-widget-frame {
@@ -623,10 +624,11 @@
         .demo-widget-container {
             width: 100%;
             max-width: 650px; /* Extra space for shadows */
-            padding: 0 25px; /* Match component's internal padding */
+            padding: 0;
             box-sizing: border-box;
             overflow: hidden;
             border-radius: 1rem;
+            position: relative;
         }
         
         /* All demo components should have consistent tall rectangle shape */
