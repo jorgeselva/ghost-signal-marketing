@@ -43,7 +43,7 @@
             animation: 
                 bigPop 0.6s ease-out 7s forwards,
                 spinGhost 1.5s ease-in-out 7.6s forwards,
-                ghostPulse 3s ease-in-out 9.5s infinite;
+                moveGhostUp 0.8s ease-out 9s forwards;
         }
 
         .ghost-signal img {
@@ -195,9 +195,9 @@
 
         .chat-bubble {
             position: absolute;
-            right: clamp(-200px, -35vw, -280px);
-            top: 50%;
-            transform: translateY(-50%);
+            left: 50%;
+            bottom: clamp(20px, 5vh, 60px);
+            transform: translateX(-50%);
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: clamp(16px, 4vw, 24px);
             padding: 24px 32px;
@@ -206,21 +206,21 @@
             max-width: clamp(250px, 50vw, 340px);
             width: clamp(250px, 50vw, 340px);
             opacity: 0;
-            animation: bubbleAppear 1s ease-out 9.5s forwards;
+            animation: bubbleAppear 1s ease-out 9.8s forwards;
             z-index: 5;
         }
 
         .chat-bubble::before {
             content: '';
             position: absolute;
-            left: clamp(-6px, -2vw, -10px);
-            top: 50%;
-            transform: translateY(-50%);
+            left: 50%;
+            top: clamp(-6px, -2vw, -10px);
+            transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-top: clamp(6px, 2vw, 10px) solid transparent;
-            border-bottom: clamp(6px, 2vw, 10px) solid transparent;
-            border-right: clamp(6px, 2vw, 10px) solid #f8f9fa;
+            border-left: clamp(6px, 2vw, 10px) solid transparent;
+            border-right: clamp(6px, 2vw, 10px) solid transparent;
+            border-bottom: clamp(6px, 2vw, 10px) solid #f8f9fa;
         }
 
         .chat-bubble h4 {
@@ -279,7 +279,7 @@
                 right: 24px;
                 left: 24px;
                 top: auto;
-                transform: none;
+                transform: translateX(0);
                 max-width: none;
                 width: auto;
                 z-index: 20;
@@ -312,7 +312,6 @@
         /* Tablet adjustments */
         @media (min-width: 481px) and (max-width: 768px) {
             .chat-bubble {
-                right: clamp(-240px, -30vw, -200px);
                 max-width: clamp(280px, 45vw, 320px);
                 width: clamp(280px, 45vw, 320px);
             }
@@ -326,7 +325,6 @@
             }
             
             .chat-bubble {
-                right: -320px;
                 max-width: 380px;
                 width: 380px;
             }
@@ -425,11 +423,22 @@
         @keyframes bubbleAppear {
             0% {
                 opacity: 0;
-                transform: translateY(-50%) translateX(20px);
+                transform: translateX(-50%) translateY(20px);
             }
             100% {
                 opacity: 1;
-                transform: translateY(-50%) translateX(0);
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes moveGhostUp {
+            0% {
+                top: 50%;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                top: 25%;
+                transform: translate(-50%, -50%) scale(1);
             }
         }
 
