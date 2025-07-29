@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ghost Signal Digest Email Animation - Responsive</title>
+  <style>
+    .ghost-signal-digest-widget * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .ghost-signal-digest-widget {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      position: relative;
+      background: transparent;
+      filter: none;
+      -webkit-filter: none;
+      padding: 24px;
+    }
+    
+    .ghost-signal-digest-widget .email-container {
+      width: 100%;
+      height: 100%;
+      max-width: 600px;
+      max-height: min(90vh, 700px);
+      background: #FFFFFF;
+      border-radius: clamp(12px, 3vw, 20px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      animation: fadeIn 0.5s ease-out;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .email-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background: #FAFAFA;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      animation-delay: 0.3s;
+      flex-shrink: 0;
+    }
+    
+    .email-icon {
+      width: clamp(20px, 4vw, 24px);
+      height: clamp(20px, 4vw, 24px);
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .email-icon img {
+      width: clamp(12px, 3vw, 14px);
+      height: clamp(12px, 3vw, 14px);
+      object-fit: contain;
+    }
+    
+    .email-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .email-subject {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1A1A1A;
+      line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .email-meta {
+      font-size: 16px;
+      color: #6B7280;
+      margin-top: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .email-content {
+      padding: 24px 32px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: 0.8s;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-height: 0;
+    }
+    
+    .email-greeting {
+      font-size: 18px;
+      color: #1A1A1A;
+      margin-bottom: 24px;
+    }
+    
+    .email-summary {
+      font-size: 18px;
+      color: #6B7280;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    
+    .insights-section {
+      background: #F5F5F5;
+      border-radius: clamp(8px, 2vw, 12px);
+      padding: 24px;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      animation-delay: 1.2s;
+    }
+    
+    .insights-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1A1A1A;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .insight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: slideIn 0.3s ease-out forwards;
+    }
+    
+    .insight-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .insight-item:nth-child(2) { animation-delay: 1.4s; }
+    .insight-item:nth-child(3) { animation-delay: 1.6s; }
+    .insight-item:nth-child(4) { animation-delay: 1.8s; }
+    .insight-item:nth-child(5) { animation-delay: 2.0s; }
+    
+    .insight-icon {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: clamp(12px, 3vw, 16px);
+    }
+    
+    .insight-text {
+      font-size: 16px;
+      color: #1A1A1A;
+      line-height: 1.4;
+      flex: 1;
+      min-width: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: #000000;
+      color: white;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: clamp(6px, 1.5vw, 8px);
+      font-size: 16px;
+      font-weight: 500;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      animation-delay: 2.2s;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      border: none;
+      text-align: center;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .cta-button:hover {
+      transform: scale(1.05);
+    }
+    
+    /* Mobile-specific adjustments */
+    @media (max-width: 480px) {
+      .ghost-signal-digest-widget {
+        padding: 0;
+      }
+      
+      .email-container {
+        border-radius: 0;
+        max-height: 100vh;
+        height: 100vh;
+      }
+      
+      .email-header {
+        padding: 16px 24px;
+      }
+      
+      .email-content {
+        padding: 16px 24px;
+      }
+      
+      .insights-section {
+        padding: 16px;
+      }
+      
+      .insight-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+      }
+      
+      .insight-icon {
+        align-self: center;
+      }
+      
+      .cta-button {
+        font-size: 16px;
+        padding: 24px;
+      }
+    }
+    
+    /* Tablet adjustments */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .email-content {
+        padding: 24px;
+      }
+      
+      .insights-section {
+        padding: 24px;
+      }
+    }
+    
+    /* Desktop enhancements */
+    @media (min-width: 1024px) {
+      .cta-button {
+        width: auto;
+        display: inline-block;
+      }
+      
+      .insight-item {
+        margin-bottom: 24px;
+      }
+    }
+    
+    /* Animation keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Smooth scroll behavior */
+    .email-content {
+      scroll-behavior: smooth;
+    }
+    
+    /* Better touch targets on mobile */
+    @media (max-width: 768px) {
+      .cta-button {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    
+    /* Ensure proper spacing at bottom for mobile browsers */
+    .email-content::after {
+      content: '';
+      display: block;
+      height: 32px;
+    }
+    
+    @media (max-width: 480px) {
+      .email-content::after {
+        height: calc(32px + env(safe-area-inset-bottom, 0px));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ghost-signal-digest-widget">
+    <div class="email-container">
+    
+    <div class="email-header">
+      <div class="email-icon">
+        <img src="https://cdn.prod.website-files.com/67d807ba14f6148f45dabc77/67e28f913414b26aa2719ffe_4.png" alt="Ghost Signal">
+      </div>
+      <div class="email-info">
+        <div class="email-subject">Weekly Competitive Intelligence Digest</div>
+        <div class="email-meta">From: Ghost Signal • Today at 9:00 AM</div>
+      </div>
+    </div>
+    
+    <div class="email-content">
+      <div class="email-summary">
+        We've detected 47 competitive moves across 12 companies this week, with significant developments from your key competitors.
+      </div>
+      
+      <div class="insights-section">
+        <div class="insights-title">
+          🔥 Top Insights This Week
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon">💰</div>
+          <div class="insight-text">Anthropic reduced enterprise API pricing by 20% - affecting 3 deals in your pipeline</div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon">🚀</div>
+          <div class="insight-text">OpenAI launched "Projects" - new competitor to Claude for Business</div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon">⭐</div>
+          <div class="insight-text">Your G2 sentiment score improved to 4.6/5 (up from 4.3 last month)</div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon">📊</div>
+          <div class="insight-text">Perplexity raised $500M Series B at $9B valuation - watch their enterprise push</div>
+        </div>
+      </div>
+      
+      <button class="cta-button" onclick="alert('📊 Opening full competitive intelligence dashboard...')">View Full Analysis →</button>
+    </div>
+    </div>
+  </div>
+</body>
+</html>

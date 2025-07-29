@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ghost Signal Battlecard Generation Animation - Responsive</title>
+  <style>
+    .ghost-signal-battlecard-widget * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .ghost-signal-battlecard-widget {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      position: relative;
+      background: transparent;
+      filter: none;
+      -webkit-filter: none;
+      padding: 24px;
+    }
+    
+    .ghost-signal-battlecard-widget .container {
+      width: 100%;
+      height: 100%;
+      max-width: 600px;
+      max-height: min(90vh, 700px);
+      background: #FFFFFF;
+      border-radius: clamp(12px, 3vw, 20px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* Chat View */
+    .chat-view {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 1;
+      animation: chatExit 0.5s ease-out forwards;
+      animation-delay: 3.5s;
+    }
+    
+    .chat-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background: #FAFAFA;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    
+    .header-icon {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .header-icon img {
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
+      object-fit: contain;
+    }
+    
+    .chat-content {
+      flex: 1;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-height: 0;
+    }
+    
+    .message {
+      display: flex;
+      gap: 16px;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      max-width: 100%;
+    }
+    
+    .message.user {
+      flex-direction: row-reverse;
+      animation-delay: 0.5s;
+    }
+    
+    .message.assistant {
+      animation-delay: 1.5s;
+    }
+    
+    .avatar {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .avatar img {
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
+      object-fit: contain;
+    }
+    
+    .message-bubble {
+      background: #F3F4F6;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: clamp(8px, 2vw, 12px);
+      padding: 16px 24px;
+      max-width: 85%;
+      font-size: 18px;
+      color: #1A1A1A;
+      line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .assistant .message-bubble {
+      background: #FFFFFF;
+    }
+    
+    .generate-button {
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: clamp(6px, 1.5vw, 8px);
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 16px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards, autoClickGenerate 0.3s ease-out;
+      animation-delay: 2.5s, 3.3s;
+      animation-fill-mode: forwards, backwards;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    @keyframes autoClickGenerate {
+      0% {
+        transform: scale(1);
+        background: #000000;
+      }
+      50% {
+        transform: scale(0.92);
+        background: #333333;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      100% {
+        transform: scale(1);
+        background: #000000;
+      }
+    }
+    
+    /* Battlecard View */
+    .battlecard-view {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transform: translateX(100%);
+      animation: battlecardEnter 0.5s ease-out forwards;
+      animation-delay: 4s;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .battlecard-header {
+      padding: 16px 24px;
+      background: #000000;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    
+    .battlecard-title {
+      font-size: 20px;
+      font-weight: 600;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .battlecard-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 16px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: 4.5s;
+      white-space: nowrap;
+    }
+    
+    .battlecard-content {
+      padding: 24px;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    
+    .section {
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+    }
+    
+    .section:nth-child(1) { animation-delay: 4.7s; }
+    .section:nth-child(2) { animation-delay: 4.9s; }
+    .section:nth-child(3) { animation-delay: 5.1s; }
+    
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1A1A1A;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .section-icon {
+      width: clamp(16px, 3vw, 20px);
+      height: clamp(16px, 3vw, 20px);
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(10px, 2vw, 12px);
+      flex-shrink: 0;
+    }
+    
+    .comparison-table {
+      background: #F5F5F5;
+      border-radius: clamp(6px, 1.5vw, 8px);
+      padding: 16px;
+      font-size: 14px;
+    }
+    
+    .comparison-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      gap: 16px;
+    }
+    
+    .comparison-row:last-child {
+      border-bottom: none;
+    }
+    
+    .comparison-label {
+      color: #6B7280;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .comparison-value {
+      font-weight: 500;
+      color: #1A1A1A;
+      text-align: right;
+      white-space: nowrap;
+    }
+    
+    .highlight-box {
+      background: #FEF3C7;
+      border: 1px solid #FCD34D;
+      border-radius: clamp(6px, 1.5vw, 8px);
+      padding: 16px;
+      font-size: 14px;
+      color: #92400E;
+      line-height: 1.3;
+    }
+    
+    .objection-list {
+      list-style: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .objection-list li {
+      position: relative;
+      padding-left: clamp(14px, 3vw, 18px);
+      margin-bottom: 8px;
+      color: #1A1A1A;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .objection-list li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #6B7280;
+    }
+    
+    .generating-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 32px;
+      border-radius: clamp(12px, 3vw, 16px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out forwards, fadeOut 0.3s ease-out forwards;
+      animation-delay: 3.5s, 3.8s;
+      max-width: 90%;
+    }
+    
+    .generating-text {
+      font-size: 20px;
+      color: #1A1A1A;
+      margin-bottom: 24px;
+    }
+    
+    .progress-bar {
+      width: clamp(150px, 40vw, 200px);
+      height: clamp(4px, 1vw, 6px);
+      background: #F5F5F5;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #000000;
+      animation: progress 0.3s ease-out forwards;
+    }
+    
+    .download-button {
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: clamp(6px, 1.5vw, 8px);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: auto;
+      width: 100%;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: 5.5s;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+    }
+    
+    .download-button:hover {
+      background: #1A1A1A;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Mobile-specific adjustments */
+    @media (max-width: 480px) {
+      .ghost-signal-battlecard-widget {
+        padding: 0;
+      }
+      
+      .container {
+        border-radius: 0;
+        max-height: 100vh;
+        height: 100vh;
+      }
+      
+      .chat-header, .battlecard-header {
+        padding: 16px 24px;
+      }
+      
+      .chat-content, .battlecard-content {
+        padding: 16px 24px;
+      }
+      
+      .comparison-table, .highlight-box {
+        padding: 16px;
+      }
+      
+      .message-bubble {
+        max-width: 90%;
+      }
+      
+      .battlecard-title {
+        font-size: 18px;
+      }
+      
+      .comparison-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      
+      .comparison-value {
+        text-align: left;
+      }
+      
+      .objection-list li {
+        padding-left: 24px;
+      }
+    }
+    
+    /* Tablet adjustments */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .battlecard-content {
+        padding: 24px;
+      }
+      
+      .comparison-table, .highlight-box {
+        padding: 16px;
+      }
+    }
+    
+    /* Desktop enhancements */
+    @media (min-width: 1024px) {
+      .download-button {
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    
+    /* Animation keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes chatExit {
+      to {
+        opacity: 0;
+        transform: translateX(-100%);
+      }
+    }
+    
+    @keyframes battlecardEnter {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes progress {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    /* Smooth scroll behavior */
+    .chat-content, .battlecard-content {
+      scroll-behavior: smooth;
+    }
+    
+    /* Safe area insets for mobile */
+    @supports (padding: max(0px)) {
+      .battlecard-content::after {
+        content: '';
+        display: block;
+        height: max(24px, env(safe-area-inset-bottom));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ghost-signal-battlecard-widget">
+    <div class="container">
+    <!-- Chat View -->
+    <div class="chat-view">
+      <div class="chat-header">
+        <div class="header-icon">
+          <img src="https://cdn.prod.website-files.com/67d807ba14f6148f45dabc77/67e28f913414b26aa2719ffe_4.png" alt="Ghost Signal">
+        </div>
+        <div style="font-size: 20px; font-weight: 600; color: #1A1A1A;">Ghost Signal Co-Pilot</div>
+      </div>
+      
+      <div class="chat-content">
+        <div class="message user">
+          <div class="avatar">
+            <div style="width: clamp(16px, 4vw, 20px); height: clamp(16px, 4vw, 20px); background: #6B7280; border-radius: 50%;"></div>
+          </div>
+          <div class="message-bubble">
+            Can you create a competitive battlecard for Anthropic? I need to prep our sales team for their new pricing.
+          </div>
+        </div>
+        
+        <div class="message assistant">
+          <div class="avatar">
+            <img src="https://cdn.prod.website-files.com/67d807ba14f6148f45dabc77/67e28f913414b26aa2719ffe_4.png" alt="Ghost Signal">
+          </div>
+          <div>
+            <div class="message-bubble">
+              I'll create a comprehensive Anthropic battlecard for you. This will include their latest pricing changes, key differentiators, and objection handlers for your sales team.
+            </div>
+            <button class="generate-button" onclick="">Generate Battlecard →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Generating Overlay -->
+    <div class="generating-overlay">
+      <div class="generating-text">Generating battlecard...</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+    
+    <!-- Battlecard View -->
+    <div class="battlecard-view">
+      <div class="battlecard-header">
+        <div class="battlecard-title">Anthropic Battlecard</div>
+        <div class="battlecard-badge">Live Document</div>
+      </div>
+      
+      <div class="battlecard-content">
+        <div class="section">
+          <div class="section-title">
+            <div class="section-icon">💰</div>
+            Pricing Comparison
+          </div>
+          <div class="comparison-table">
+            <div class="comparison-row">
+              <span class="comparison-label">API Pricing</span>
+              <span class="comparison-value">20% higher than us</span>
+            </div>
+            <div class="comparison-row">
+              <span class="comparison-label">Context Window</span>
+              <span class="comparison-value">200K vs our 128K</span>
+            </div>
+            <div class="comparison-row">
+              <span class="comparison-label">Response Time</span>
+              <span class="comparison-value">2.1s vs our 1.2s</span>
+            </div>
+            <div class="comparison-row">
+              <span class="comparison-label">Uptime SLA</span>
+              <span class="comparison-value">99.5% vs 99.9%</span>
+            </div>
+            <div class="comparison-row">
+              <span class="comparison-label">Support SLA</span>
+              <span class="comparison-value">24hr vs 1hr</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">
+            <div class="section-icon">⚡</div>
+            Key Differentiators
+          </div>
+          <div class="highlight-box">
+            <strong>Our Edge:</strong> Superior uptime (99.9%), 2x faster responses, dedicated enterprise support with 1-hour SLA
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">
+            <div class="section-icon">🛡️</div>
+            Quick Objection Handlers
+          </div>
+          <ul class="objection-list">
+            <li>"Their pricing is 20% lower" → Factor in TCO with downtime costs</li>
+            <li>"Larger context window" → Our 128K covers 95% of enterprise uses</li>
+            <li>"Switching costs too high" → Free migration support & API compat</li>
+            <li>"They're the AI leader" → We have better enterprise reliability</li>
+          </ul>
+        </div>
+        
+        <button class="download-button" onclick="alert('📥 Battlecard downloaded! PDF saved to your device.')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L12 14M12 14L16 10M12 14L8 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 16V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Download Battlecard
+        </button>
+      </div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>

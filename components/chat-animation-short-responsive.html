@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ghost Signal Chat Animation - Responsive</title>
+  <style>
+    .ghost-signal-chat-short-widget * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .ghost-signal-chat-short-widget {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      position: relative;
+      background: transparent;
+      filter: none;
+      -webkit-filter: none;
+      padding: 24px;
+    }
+    
+    .ghost-signal-chat-short-widget .chat-container {
+      width: 100%;
+      height: 100%;
+      max-width: 600px;
+      max-height: min(90vh, 900px);
+      background: #FFFFFF;
+      border-radius: clamp(12px, 3vw, 20px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .chat-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background: #FAFAFA;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    
+    .header-icon {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .header-icon img {
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
+      object-fit: contain;
+    }
+    
+    .header-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1A1A1A;
+    }
+    
+    .chat-messages {
+      flex: 1;
+      padding: 16px 24px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 2vw, 12px);
+      min-height: 0;
+    }
+    
+    .message {
+      display: flex;
+      gap: 16px;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      max-width: 100%;
+    }
+    
+    .message.user {
+      flex-direction: row-reverse;
+      animation-delay: 0.5s;
+    }
+    
+    .message.assistant {
+      animation-delay: 1.5s;
+    }
+    
+    .avatar {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      border-radius: 50%;
+      background: #F5F5F5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .assistant .avatar {
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    
+    .assistant .avatar img {
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
+      object-fit: contain;
+    }
+    
+    .message-bubble {
+      background: #F3F4F6;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: clamp(8px, 2vw, 12px);
+      padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px);
+      max-width: 75%;
+      font-size: 18px;
+      color: #1A1A1A;
+      line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .assistant .message-bubble {
+      background: #FFFFFF;
+    }
+    
+    .assistant-text {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: 2.5s;
+    }
+    
+    .play-recommendation {
+      margin-top: 24px;
+      padding: 24px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: clamp(8px, 2vw, 12px);
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      animation-delay: 3.2s;
+    }
+    
+    .play-rec-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .play-rec-icon {
+      width: clamp(16px, 3vw, 20px);
+      height: clamp(16px, 3vw, 20px);
+      background: #000000;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    
+    .play-rec-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1A1A1A;
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .play-rec-description {
+      font-size: 14px;
+      color: #64748B;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+    
+    .play-rec-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .play-stat {
+      text-align: center;
+    }
+    
+    .play-stat-number {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1A1A1A;
+      display: block;
+    }
+    
+    .play-stat-label {
+      font-size: clamp(9px, 2vw, 11px);
+      color: #64748B;
+      display: block;
+    }
+    
+    .view-details-btn {
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 8px 24px;
+      border-radius: clamp(4px, 1vw, 6px);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      animation: autoClick 0.3s ease-out;
+      animation-delay: 6.9s;
+      animation-fill-mode: backwards;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+    
+    .view-details-btn:hover {
+      background: #1A1A1A;
+      transform: translateY(-1px);
+    }
+    
+    @keyframes autoClick {
+      0% {
+        transform: scale(1);
+        background: #000000;
+      }
+      50% {
+        transform: scale(0.92);
+        background: #333333;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      100% {
+        transform: scale(1);
+        background: #000000;
+      }
+    }
+    
+    .play-details {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+      z-index: 10;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.4s ease-out;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .play-details.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .play-header {
+      padding: 16px 24px;
+      background: #000000;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    
+    .play-title {
+      font-size: 18px;
+      font-weight: 600;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .play-status {
+      background: rgba(34, 197, 94, 0.2);
+      color: #16a34a;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: clamp(9px, 2vw, 11px);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .back-button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-right: 16px;
+    }
+    
+    .play-content {
+      padding: 24px;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-height: 0;
+    }
+    
+    .play-section {
+      margin-bottom: 24px;
+    }
+    
+    .play-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1A1A1A;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .play-section-icon {
+      width: clamp(14px, 3vw, 18px);
+      height: clamp(14px, 3vw, 18px);
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(8px, 2vw, 10px);
+      flex-shrink: 0;
+    }
+    
+    .play-description {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+    
+    .team-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .team-tag {
+      background: #F3F4F6;
+      color: #374151;
+      padding: calc(8px / 2) 8px;
+      border-radius: 8px;
+      font-size: clamp(9px, 2vw, 10px);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .team-tag.demand-gen { background: #DBEAFE; color: #1E40AF; }
+    .team-tag.sales { background: #D1FAE5; color: #047857; }
+    .team-tag.marketing { background: #FEF3C7; color: #92400E; }
+    .team-tag.cs { background: #E0E7FF; color: #3730A3; }
+    
+    .timeline {
+      background: #F9FAFB;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    
+    .timeline-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    
+    .timeline-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .timeline-day {
+      background: #000000;
+      color: white;
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(14px, 3vw, 16px);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(7px, 1.5vw, 9px);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    
+    .timeline-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .timeline-title {
+      font-size: clamp(10px, 2.5vw, 11px);
+      font-weight: 500;
+      color: #1A1A1A;
+      margin-bottom: 2px;
+    }
+    
+    .timeline-description {
+      font-size: clamp(9px, 2vw, 10px);
+      color: #6B7280;
+      line-height: 1.3;
+    }
+    
+    .accounts-list {
+      background: #F9FAFB;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    
+    .account-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #E5E7EB;
+      gap: 8px;
+    }
+    
+    .account-item:last-child {
+      border-bottom: none;
+    }
+    
+    .account-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .account-logo {
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
+      background: #E5E7EB;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(7px, 1.5vw, 9px);
+      font-weight: 600;
+      color: #6B7280;
+      flex-shrink: 0;
+    }
+    
+    .account-details {
+      font-size: clamp(10px, 2.5vw, 11px);
+      color: #1A1A1A;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .account-value {
+      font-size: clamp(8px, 2vw, 9px);
+      color: #6B7280;
+    }
+    
+    .risk-indicator {
+      padding: calc(8px / 2) 8px;
+      border-radius: 6px;
+      font-size: clamp(8px, 2vw, 9px);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .risk-high { background: #FEE2E2; color: #DC2626; }
+    .risk-medium { background: #FEF3C7; color: #D97706; }
+    
+    .run-play-button {
+      width: 100%;
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: clamp(4px, 1vw, 6px);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.2s ease;
+    }
+    
+    .run-play-button:hover {
+      background: #1A1A1A;
+      transform: translateY(-1px);
+    }
+    
+    .input-bar {
+      padding: 16px 24px;
+      background: #FAFAFA;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    
+    .input-field {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: clamp(12px, 3vw, 20px);
+      padding: 16px 24px;
+      font-size: 16px;
+      color: #9CA3AF;
+      outline: none;
+    }
+    
+    .send-button {
+      width: clamp(28px, 6vw, 36px);
+      height: clamp(28px, 6vw, 36px);
+      background: #000000;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .typing-indicator {
+      display: flex;
+      gap: 6px;
+      padding: 16px 24px;
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out forwards, fadeOut 0.2s ease-out forwards;
+      animation-delay: 1.7s, 1.95s;
+    }
+    
+    .typing-dot {
+      width: clamp(6px, 1.5vw, 8px);
+      height: clamp(6px, 1.5vw, 8px);
+      background: #6B7280;
+      border-radius: 50%;
+      animation: bounce 1.4s ease-in-out infinite;
+    }
+    
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    
+    /* Mobile-specific adjustments */
+    @media (max-width: 480px) {
+      .ghost-signal-chat-short-widget {
+        padding: 0;
+      }
+      
+      .chat-container {
+        border-radius: 0;
+        max-height: 100vh;
+        height: 100vh;
+      }
+      
+      .play-rec-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .message-bubble {
+        max-width: 90%;
+      }
+    }
+    
+    /* Tablet adjustments */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .play-rec-stats {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    .pulse-dot {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+  <script>
+    let autoOpenTimer;
+    
+    function showPlayDetails() {
+      if (autoOpenTimer) {
+        clearTimeout(autoOpenTimer);
+      }
+      document.getElementById('playDetails').classList.add('show');
+    }
+    
+    function hidePlayDetails() {
+      document.getElementById('playDetails').classList.remove('show');
+    }
+    
+    function runPlay() {
+      alert('🚀 Project Shield deployed! Demand Gen is creating personalized assets, Sales sequences activated for 8 accounts. Expected impact: $15.5M ARR protected.');
+    }
+    
+    function startAutoOpenTimer() {
+      autoOpenTimer = setTimeout(() => {
+        showPlayDetails();
+      }, 4000);
+    }
+    
+    window.addEventListener('load', () => {
+      setTimeout(startAutoOpenTimer, 3200);
+    });
+    
+    function handleInputSubmit() {
+      const input = document.querySelector('.input-field');
+      const chatArea = document.querySelector('.chat-area');
+      
+      if (input.value.trim()) {
+        input.value = '';
+        
+        const existingResponse = document.querySelector('.response-message');
+        if (existingResponse) {
+          existingResponse.remove();
+        }
+        
+        const promptHtml = `
+          <div class="message assistant response-message" style="opacity: 0; animation: slideIn 0.5s ease-out forwards; animation-delay: 0.2s; margin: 16px 0;">
+            <div class="avatar">
+              <img src="https://cdn.prod.website-files.com/67d807ba14f6148f45dabc77/67e28f913414b26aa2719ffe_4.png" alt="Ghost Signal">
+            </div>
+            <div class="message-bubble">
+              <div class="message-header">GHOST SIGNAL</div>
+              <div class="message-content">
+                <span>Try clicking "View Play Details" to see the full ABM strategy I've created for you!</span>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        const suggestions = document.querySelector('.suggestions');
+        suggestions.insertAdjacentHTML('afterend', promptHtml);
+        chatArea.scrollTop = chatArea.scrollHeight;
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="ghost-signal-chat-short-widget">
+    <div class="chat-container">
+    
+    <!-- Play Details View -->
+    <div class="play-details" id="playDetails">
+      <div class="play-header">
+        <div style="display: flex; align-items: center; flex: 1; min-width: 0;">
+          <button class="back-button" onclick="hidePlayDetails()">← Back</button>
+          <div style="flex: 1; min-width: 0;">
+            <div class="play-title">Project Shield - ABM Defense Play</div>
+          </div>
+        </div>
+        <div class="play-status">Ready to Deploy</div>
+      </div>
+      
+      <div class="play-content">
+        <div class="play-section">
+          <h3>
+            <div class="play-section-icon">🎯</div>
+            Play Overview
+          </h3>
+          <div class="play-description">
+            ABM campaign to protect enterprise accounts from Anthropic's pricing.
+          </div>
+          <div class="team-tags">
+            <div class="team-tag demand-gen">Demand Gen</div>
+            <div class="team-tag sales">Enterprise Sales</div>
+            <div class="team-tag marketing">Product Marketing</div>
+            <div class="team-tag cs">Customer Success</div>
+          </div>
+        </div>
+        
+        <div class="play-section">
+          <h3>
+            <div class="play-section-icon">📅</div>
+            7-Day Execution Timeline
+          </h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-day">D1</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Demand Gen: Create Assets</div>
+                <div class="timeline-description">ROI calculators & competitive battlecards</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-day">D2</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Marketing: Deploy Campaigns</div>
+                <div class="timeline-description">LinkedIn ads & personalized emails</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-day">D3</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Sales: Initial Outreach</div>
+                <div class="timeline-description">Personalized competitive messaging</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-day">D5</div>
+              <div class="timeline-content">
+                <div class="timeline-title">CS: Strategic Reviews</div>
+                <div class="timeline-description">Schedule stakeholder meetings</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-day">D7</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Sales: Close & Renew</div>
+                <div class="timeline-description">Custom ROI presentations</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="play-section">
+          <h3>
+            <div class="play-section-icon">🏢</div>
+            Target Accounts (8 High-Risk)
+          </h3>
+          <div class="accounts-list">
+            <div class="account-item">
+              <div class="account-info">
+                <div class="account-logo">SF</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div class="account-details">Salesforce Inc.</div>
+                  <div class="account-value">$2.4M • 45 days</div>
+                </div>
+              </div>
+              <div class="risk-indicator risk-high">High</div>
+            </div>
+            <div class="account-item">
+              <div class="account-info">
+                <div class="account-logo">ST</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div class="account-details">Stripe Technologies</div>
+                  <div class="account-value">$1.8M • 62 days</div>
+                </div>
+              </div>
+              <div class="risk-indicator risk-high">High</div>
+            </div>
+            <div class="account-item">
+              <div class="account-info">
+                <div class="account-logo">+6</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div class="account-details">6 more accounts</div>
+                  <div class="account-value">$11.3M combined</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button class="run-play-button" onclick="runPlay()">🚀 Run Play - Deploy Now</button>
+      </div>
+    </div>
+    <div class="chat-header">
+      <div class="header-icon">
+        <img src="https://cdn.prod.website-files.com/67d807ba14f6148f45dabc77/67e28f913414b26aa2719ffe_4.png" alt="Ghost Signal">
+      </div>
+      <div class="header-text">Ghost Signal Co-Pilot</div>
+    </div>
+    
+    <div class="chat-messages">
+      <div class="message user">
+        <div class="avatar">
+          <div class="pulse-dot" style="width: clamp(14px, 3vw, 18px); height: clamp(14px, 3vw, 18px); background: #10b981; border-radius: 50%;"></div>
+        </div>
+        <div class="message-bubble">
+          What's the latest on our competitors? Any major updates I should know about?
+        </div>
+      </div>
+      
+      <div class="message assistant">
+        <div class="avatar">
+          <img src="https://cdn.prod.website-files.com/67d807ba14f6148f45dabc77/67e28f913414b26aa2719ffe_4.png" alt="Ghost Signal">
+        </div>
+        <div class="message-bubble">
+          <div class="typing-indicator" style="position: absolute;">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+          <div class="assistant-text">
+            I recommend launching "Project Shield" - a targeted ABM play for your at-risk enterprise accounts.
+            
+            <div class="play-recommendation">
+              <div class="play-rec-header">
+                <div class="play-rec-icon">🛡️</div>
+                <div class="play-rec-title">Project Shield - ABM Defense Play</div>
+              </div>
+              <div class="play-rec-description">
+                Coordinated 7-day campaign across Demand Gen, Sales, and CS to protect high-value renewals from Anthropic's pricing pressure.
+              </div>
+              <div class="play-rec-stats">
+                <div class="play-stat">
+                  <div class="play-stat-number">8</div>
+                  <div class="play-stat-label">Accounts</div>
+                </div>
+                <div class="play-stat">
+                  <div class="play-stat-number">$15.5M</div>
+                  <div class="play-stat-label">ARR at Risk</div>
+                </div>
+                <div class="play-stat">
+                  <div class="play-stat-number">7</div>
+                  <div class="play-stat-label">Days</div>
+                </div>
+                <div class="play-stat">
+                  <div class="play-stat-number">4</div>
+                  <div class="play-stat-label">Teams</div>
+                </div>
+              </div>
+              <button class="view-details-btn" id="playDetailsBtn" onclick="showPlayDetails()">View Full Play Details →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="input-bar">
+      <input type="text" class="input-field" placeholder="Ask anything..." onkeypress="if(event.key === 'Enter') handleInputSubmit()">
+      <div class="send-button" onclick="handleInputSubmit()">↑</div>
+    </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+/* Ghost Signal Responsive Framework */
+
+/* CSS Variables for consistent spacing and sizing */
+:root {
+  /* Breakpoints */
+  --mobile: 480px;
+  --tablet: 768px;
+  --desktop: 1024px;
+  --wide: 1440px;
+  
+  /* Spacing scale */
+  --space-xs: clamp(0.25rem, 1vw, 0.5rem);
+  --space-sm: clamp(0.5rem, 2vw, 1rem);
+  --space-md: clamp(1rem, 3vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 4vw, 2rem);
+  --space-xl: clamp(2rem, 5vw, 3rem);
+  
+  /* Font sizes */
+  --font-xs: clamp(0.875rem, 2.5vw, 1rem);
+  --font-sm: clamp(1rem, 3vw, 1.125rem);
+  --font-base: clamp(1.125rem, 3.5vw, 1.25rem);
+  --font-lg: clamp(1.25rem, 4vw, 1.5rem);
+  --font-xl: clamp(1.5rem, 4.5vw, 1.75rem);
+  --font-2xl: clamp(1.75rem, 5.5vw, 2.25rem);
+  
+  /* Container sizing */
+  --container-size: min(90vw, 600px);
+  --container-padding: var(--space-md);
+}
+
+/* Base responsive container */
+.responsive-container {
+  width: 100%;
+  height: 100%;
+  max-width: var(--container-size);
+  margin: 0 auto;
+  padding: var(--container-padding);
+  box-sizing: border-box;
+}
+
+/* Responsive widget wrapper */
+.responsive-widget {
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+  max-height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  box-sizing: border-box;
+}
+
+/* Responsive card container */
+.responsive-card {
+  width: 100%;
+  height: 100%;
+  max-width: var(--container-size);
+  max-height: min(90vh, 700px);
+  background: #FFFFFF;
+  border-radius: clamp(12px, 3vw, 20px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive text utilities */
+.responsive-text-xs { font-size: var(--font-xs); }
+.responsive-text-sm { font-size: var(--font-sm); }
+.responsive-text-base { font-size: var(--font-base); }
+.responsive-text-lg { font-size: var(--font-lg); }
+.responsive-text-xl { font-size: var(--font-xl); }
+.responsive-text-2xl { font-size: var(--font-2xl); }
+
+/* Responsive spacing utilities */
+.responsive-p-xs { padding: var(--space-xs); }
+.responsive-p-sm { padding: var(--space-sm); }
+.responsive-p-md { padding: var(--space-md); }
+.responsive-p-lg { padding: var(--space-lg); }
+.responsive-p-xl { padding: var(--space-xl); }
+
+.responsive-m-xs { margin: var(--space-xs); }
+.responsive-m-sm { margin: var(--space-sm); }
+.responsive-m-md { margin: var(--space-md); }
+.responsive-m-lg { margin: var(--space-lg); }
+.responsive-m-xl { margin: var(--space-xl); }
+
+/* Responsive grid system */
+.responsive-grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
+/* Hide scrollbars on mobile for cleaner look */
+@media (max-width: 768px) {
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Mobile-first media queries */
+@media (max-width: 480px) {
+  :root {
+    --container-padding: var(--space-sm);
+  }
+  
+  .responsive-widget {
+    padding: var(--space-sm);
+    min-height: 100vh;
+    max-height: none;
+  }
+  
+  .responsive-card {
+    border-radius: 0;
+    max-height: 100vh;
+    height: 100vh;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 481px) and (max-width: 768px) {
+  .responsive-widget {
+    padding: var(--space-md);
+  }
+}
+
+/* Desktop enhancements */
+@media (min-width: 1024px) {
+  :root {
+    --container-size: min(80vw, 800px);
+  }
+  
+  .responsive-widget {
+    padding: var(--space-lg);
+  }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1440px) {
+  :root {
+    --container-size: 900px;
+  }
+}
+
+/* Utility classes for responsive behavior */
+.hide-mobile { display: block; }
+.show-mobile { display: none; }
+
+@media (max-width: 768px) {
+  .hide-mobile { display: none; }
+  .show-mobile { display: block; }
+}
+
+/* Responsive button styles */
+.responsive-button {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-sm);
+  border-radius: clamp(6px, 1.5vw, 8px);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive input styles */
+.responsive-input {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-base);
+  border-radius: clamp(12px, 3vw, 20px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Container queries for component-level responsiveness */
+@container (max-width: 400px) {
+  .container-responsive-text {
+    font-size: var(--font-sm);
+  }
+  
+  .container-responsive-padding {
+    padding: var(--space-sm);
+  }
+}
+
+/* Smooth transitions for responsive changes */
+* {
+  transition: font-size 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+}
+
+/* Prevent text overflow on small screens */
+.responsive-text-wrap {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Responsive aspect ratio containers */
+.aspect-square {
+  aspect-ratio: 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-portrait {
+  aspect-ratio: 3 / 4;
+}
+
+/* Ensure images and media are responsive */
+.responsive-media {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

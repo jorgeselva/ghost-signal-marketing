@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ghost Signal Data Convergence Animation - Responsive</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 24px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .animation-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 600px;
+            max-height: min(90vh, 800px);
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ghost-signal {
+            position: absolute;
+            width: clamp(80px, 15vw, 120px);
+            height: clamp(80px, 15vw, 120px);
+            z-index: 10;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: 
+                bigPop 0.6s ease-out 7s forwards,
+                spinGhost 1.5s ease-in-out 7.6s forwards,
+                ghostPulse 3s ease-in-out 9.5s infinite;
+        }
+
+        .ghost-signal img {
+            width: clamp(50px, 10vw, 80px);
+            height: clamp(50px, 10vw, 80px);
+            border-radius: 50%;
+            background: white;
+            padding: clamp(6px, 2vw, 10px);
+        }
+
+        .data-source {
+            position: absolute;
+            width: clamp(45px, 8vw, 65px);
+            height: clamp(45px, 8vw, 65px);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: popIn 0.8s ease-out forwards;
+        }
+
+        .data-source img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        /* Connection lines */
+        .connection-line {
+            position: absolute;
+            height: clamp(1px, 0.5vw, 2px);
+            background: linear-gradient(90deg, transparent 0%, rgba(102, 126, 234, 0.3) 50%, transparent 100%);
+            transform-origin: center center;
+            opacity: 0;
+            left: 50%;
+            top: 50%;
+        }
+
+        .line-1 { 
+            --rotation: -90deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 1s forwards,
+                      lineFade 1s ease-out 4s forwards;
+        }
+        .line-2 { 
+            --rotation: -45deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 1.2s forwards,
+                      lineFade 1s ease-out 4.2s forwards;
+        }
+        .line-3 { 
+            --rotation: 0deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 1.4s forwards,
+                      lineFade 1s ease-out 4.4s forwards;
+        }
+        .line-4 { 
+            --rotation: 45deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 1.6s forwards,
+                      lineFade 1s ease-out 4.6s forwards;
+        }
+        .line-5 { 
+            --rotation: 90deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 1.8s forwards,
+                      lineFade 1s ease-out 4.8s forwards;
+        }
+        .line-6 { 
+            --rotation: 135deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 2s forwards,
+                      lineFade 1s ease-out 5s forwards;
+        }
+        .line-7 { 
+            --rotation: 180deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 2.2s forwards,
+                      lineFade 1s ease-out 5.2s forwards;
+        }
+        .line-8 { 
+            --rotation: -135deg; 
+            width: clamp(120px, 25vw, 180px); 
+            animation: lineAppear 0.5s ease-out 2.4s forwards,
+                      lineFade 1s ease-out 5.4s forwards;
+        }
+
+        /* Position data sources in circle around ghost signal - closer positioning */
+        .source-1 { 
+            top: clamp(30px, 12vw, 70px); 
+            left: 50%; 
+            transform: translateX(-50%) scale(0); 
+            animation: popIn 0.8s ease-out 0.2s forwards,
+                      moveToCenter 1.5s ease-in-out 4s forwards,
+                      fadeOut 0.3s ease-out 5.5s forwards;
+        }
+        .source-2 { 
+            top: clamp(80px, 18vw, 140px); 
+            right: clamp(50px, 15vw, 100px); 
+            animation: popIn 0.8s ease-out 0.4s forwards,
+                      moveToCenter 1.5s ease-in-out 4.2s forwards,
+                      fadeOut 0.3s ease-out 5.7s forwards;
+        }
+        .source-3 { 
+            top: 50%; 
+            right: clamp(30px, 12vw, 70px); 
+            transform: translateY(-50%) scale(0); 
+            animation: popIn 0.8s ease-out 0.6s forwards,
+                      moveToCenter 1.5s ease-in-out 4.4s forwards,
+                      fadeOut 0.3s ease-out 5.9s forwards;
+        }
+        .source-4 { 
+            bottom: clamp(80px, 18vw, 140px); 
+            right: clamp(50px, 15vw, 100px); 
+            animation: popIn 0.8s ease-out 0.8s forwards,
+                      moveToCenter 1.5s ease-in-out 4.6s forwards,
+                      fadeOut 0.3s ease-out 6.1s forwards;
+        }
+        .source-5 { 
+            bottom: clamp(30px, 12vw, 70px); 
+            left: 50%; 
+            transform: translateX(-50%) scale(0); 
+            animation: popIn 0.8s ease-out 1.0s forwards,
+                      moveToCenter 1.5s ease-in-out 4.8s forwards,
+                      fadeOut 0.3s ease-out 6.3s forwards;
+        }
+        .source-6 { 
+            bottom: clamp(80px, 18vw, 140px); 
+            left: clamp(50px, 15vw, 100px); 
+            animation: popIn 0.8s ease-out 1.2s forwards,
+                      moveToCenter 1.5s ease-in-out 5.0s forwards,
+                      fadeOut 0.3s ease-out 6.5s forwards;
+        }
+        .source-7 { 
+            top: 50%; 
+            left: clamp(30px, 12vw, 70px); 
+            transform: translateY(-50%) scale(0); 
+            animation: popIn 0.8s ease-out 1.4s forwards,
+                      moveToCenter 1.5s ease-in-out 5.2s forwards,
+                      fadeOut 0.3s ease-out 6.7s forwards;
+        }
+        .source-8 { 
+            top: clamp(80px, 18vw, 140px); 
+            left: clamp(50px, 15vw, 100px); 
+            animation: popIn 0.8s ease-out 1.6s forwards,
+                      moveToCenter 1.5s ease-in-out 5.4s forwards,
+                      fadeOut 0.3s ease-out 6.9s forwards;
+        }
+
+        .chat-bubble {
+            position: absolute;
+            right: clamp(-200px, -35vw, -280px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: clamp(16px, 4vw, 24px);
+            padding: 24px 32px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            max-width: clamp(250px, 50vw, 340px);
+            width: clamp(250px, 50vw, 340px);
+            opacity: 0;
+            animation: bubbleAppear 1s ease-out 9.5s forwards;
+            z-index: 5;
+        }
+
+        .chat-bubble::before {
+            content: '';
+            position: absolute;
+            left: clamp(-6px, -2vw, -10px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: clamp(6px, 2vw, 10px) solid transparent;
+            border-bottom: clamp(6px, 2vw, 10px) solid transparent;
+            border-right: clamp(6px, 2vw, 10px) solid #f8f9fa;
+        }
+
+        .chat-bubble h4 {
+            margin: 0 0 16px 0;
+            color: #1a1a1a;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight {
+            margin: 16px 0;
+            padding: 16px 24px;
+            font-size: 16px;
+            color: #4a5568;
+            background: rgba(102, 126, 234, 0.08);
+            border-radius: clamp(8px, 2vw, 12px);
+            border-left: 3px solid #667eea;
+            opacity: 0;
+            position: relative;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .insight-text {
+            margin-left: 0;
+        }
+
+        .insight-1 { animation: typeIn 0.8s ease-out 10.5s forwards; }
+        .insight-2 { animation: typeIn 0.8s ease-out 11.5s forwards; }
+        .insight-3 { animation: typeIn 0.8s ease-out 12.5s forwards; }
+
+        .thinking-dots {
+            display: inline-block;
+            margin-left: 8px;
+            opacity: 0;
+            animation: dotsThinking 1.5s ease-in-out 10s infinite;
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+            
+            .animation-container {
+                max-width: 100%;
+                max-height: 100vh;
+            }
+            
+            .chat-bubble {
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                left: 24px;
+                top: auto;
+                transform: none;
+                max-width: none;
+                width: auto;
+                z-index: 20;
+            }
+            
+            .chat-bubble::before {
+                display: none;
+            }
+            
+            .insight {
+                padding: 16px;
+                margin: 8px 0;
+            }
+            
+            .insight-text {
+                margin-left: 0;
+            }
+            
+            /* Adjust source positions for mobile */
+            .source-1 { top: 5%; }
+            .source-2 { top: 25%; right: 5%; }
+            .source-3 { top: 50%; right: 5%; transform: translateY(-50%) scale(0); }
+            .source-4 { bottom: 25%; right: 5%; }
+            .source-5 { bottom: 5%; }
+            .source-6 { bottom: 25%; left: 5%; }
+            .source-7 { top: 50%; left: 5%; transform: translateY(-50%) scale(0); }
+            .source-8 { top: 25%; left: 5%; }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .chat-bubble {
+                right: clamp(-240px, -30vw, -200px);
+                max-width: clamp(280px, 45vw, 320px);
+                width: clamp(280px, 45vw, 320px);
+            }
+        }
+
+        /* Large screen adjustments */
+        @media (min-width: 1024px) {
+            .animation-container {
+                max-width: 700px;
+                max-height: 700px;
+            }
+            
+            .chat-bubble {
+                right: -320px;
+                max-width: 380px;
+                width: 380px;
+            }
+        }
+
+        /* Animations - kept the same but made responsive where needed */
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            70% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes moveToCenter {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0.3);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+        }
+
+        @keyframes lineAppear {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) rotate(var(--rotation)) scaleX(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) rotate(var(--rotation)) scaleX(1);
+            }
+        }
+
+        @keyframes lineFade {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) rotate(var(--rotation)) scaleX(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) rotate(var(--rotation)) scaleX(0.5);
+            }
+        }
+
+        @keyframes bigPop {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.4);
+                box-shadow: 0 20px 50px rgba(102, 126, 234, 0.4);
+            }
+            100% {
+                transform: scale(1.2);
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        @keyframes spinGhost {
+            0% {
+                transform: scale(1.2) rotate(0deg);
+            }
+            100% {
+                transform: scale(1) rotate(720deg);
+            }
+        }
+
+        @keyframes ghostPulse {
+            0%, 100% {
+                transform: scale(1) rotate(720deg);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            }
+            50% {
+                transform: scale(1.15) rotate(720deg);
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        @keyframes bubbleAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        /* Mobile bubble animation */
+        @media (max-width: 480px) {
+            @keyframes bubbleAppear {
+                0% {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        @keyframes typeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes dotsThinking {
+            0%, 20% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Ensure proper stacking and overflow handling */
+        .animation-container {
+            overflow: visible;
+        }
+
+        /* Safe area handling for mobile devices */
+        @supports (padding: max(0px)) {
+            @media (max-width: 480px) {
+                .chat-bubble {
+                    bottom: max(24px, env(safe-area-inset-bottom));
+                    right: max(24px, env(safe-area-inset-right));
+                    left: max(24px, env(safe-area-inset-left));
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Auto-restart animation after completion
+        setTimeout(function() {
+            location.reload();
+        }, 15500); // Total animation time (13.5s) + 2s pause
+    </script>
+    <div class="animation-container">
+        <!-- Ghost Signal Logo (center) -->
+        <div class="ghost-signal">
+            <img src="images/ghost signal circle.png" alt="Ghost Signal">
+        </div>
+
+        <!-- Connection Lines -->
+        <div class="connection-line line-1"></div>
+        <div class="connection-line line-2"></div>
+        <div class="connection-line line-3"></div>
+        <div class="connection-line line-4"></div>
+        <div class="connection-line line-5"></div>
+        <div class="connection-line line-6"></div>
+        <div class="connection-line line-7"></div>
+        <div class="connection-line line-8"></div>
+
+        <!-- Data Source Icons positioned around the circle -->
+        <div class="data-source source-1">
+            <img src="animation file/trustradius.png" alt="TrustRadius">
+        </div>
+        <div class="data-source source-2">
+            <img src="animation file/g2.png" alt="G2">
+        </div>
+        <div class="data-source source-3">
+            <img src="animation file/glassdoor.png" alt="Glassdoor">
+        </div>
+        <div class="data-source source-4">
+            <img src="animation file/website.png" alt="Website">
+        </div>
+        <div class="data-source source-5">
+            <img src="animation file/github.png" alt="GitHub">
+        </div>
+        <div class="data-source source-6">
+            <img src="animation file/linkedin.png" alt="LinkedIn">
+        </div>
+        <div class="data-source source-7">
+            <img src="animation file/perplexity.png" alt="Perplexity">
+        </div>
+        <div class="data-source source-8">
+            <img src="animation file/gong.png" alt="Gong">
+        </div>
+
+        <!-- Chat Bubble with Insights -->
+        <div class="chat-bubble">
+            <h4>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 11.5C21 16.75 16.75 21 11.5 21C6.25 21 2 16.75 2 11.5C2 6.25 6.25 2 11.5 2" stroke="#667eea" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M22 22L20 20" stroke="#667eea" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="11.5" cy="11.5" r="2.5" fill="#667eea"/>
+                    <path d="M16 7L19 4M19 4L22 7M19 4V10" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                AI Insights
+                <span class="thinking-dots">...</span>
+            </h4>
+            <div class="insight insight-1">
+                <span class="insight-text">💰 Anthropic reduced API pricing by 20% - affecting 3 pipeline deals</span>
+            </div>
+            <div class="insight insight-2">
+                <span class="insight-text">🚀 OpenAI launched "Projects" competing with Claude for Business</span>
+            </div>
+            <div class="insight insight-3">
+                <span class="insight-text">⭐ Your G2 sentiment improved to 4.6/5 (up from 4.3)</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

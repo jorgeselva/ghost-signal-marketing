@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ghost Signal Main Chat - Responsive</title>
+  <style>
+    .ghost-signal-chat-widget * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .ghost-signal-chat-widget {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      position: relative;
+      background: transparent;
+      filter: none;
+      -webkit-filter: none;
+      padding: 24px;
+    }
+    
+    .ghost-signal-chat-widget .chat-container {
+      width: 100%;
+      height: 100%;
+      max-width: 600px;
+      max-height: min(90vh, 900px);
+      background: #FFFFFF;
+      border-radius: clamp(12px, 3vw, 20px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .chat-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background: #FAFAFA;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    
+    .header-icon {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .header-icon img {
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
+      object-fit: contain;
+    }
+    
+    .header-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1A1A1A;
+    }
+    
+    .chat-messages {
+      flex: 1;
+      padding: 16px 24px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 2vw, 12px);
+      min-height: 0;
+    }
+    
+    .message {
+      display: flex;
+      gap: 16px;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      max-width: 100%;
+    }
+    
+    .message.user {
+      flex-direction: row-reverse;
+      animation-delay: 0.5s;
+    }
+    
+    .message.assistant {
+      animation-delay: 1.5s;
+    }
+    
+    .avatar {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      border-radius: 50%;
+      background: #F5F5F5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .assistant .avatar {
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    
+    .assistant .avatar img {
+      width: clamp(16px, 4vw, 20px);
+      height: clamp(16px, 4vw, 20px);
+      object-fit: contain;
+    }
+    
+    .message-bubble {
+      background: #F3F4F6;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: clamp(8px, 2vw, 12px);
+      padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px);
+      max-width: 75%;
+      font-size: 18px;
+      color: #1A1A1A;
+      line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .assistant .message-bubble {
+      background: #FFFFFF;
+    }
+    
+    .message-content {
+      font-size: 18px;
+      color: #1A1A1A;
+      line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .assistant-text {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: 2.5s;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .suggestions {
+      margin-top: 16px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: 3.5s;
+      flex-shrink: 0;
+      margin-bottom: 16px;
+    }
+    
+    .suggestions h3 {
+      font-size: 14px;
+      color: #6B7280;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    
+    .suggestion-item {
+      padding: clamp(6px, 1.5vw, 8px) 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      cursor: pointer;
+      opacity: 0;
+      animation: slideIn 0.3s ease-out forwards;
+      border-radius: clamp(4px, 1vw, 6px);
+      transition: background-color 0.2s ease;
+    }
+    
+    .suggestion-item:nth-child(2) { animation-delay: 3.7s; }
+    .suggestion-item:nth-child(3) { animation-delay: 3.8s; }
+    .suggestion-item:nth-child(4) { animation-delay: 3.9s; }
+    .suggestion-item:nth-child(5) { animation-delay: 4.0s; }
+    
+    .suggestion-item:hover {
+      background: rgba(0, 0, 0, 0.02);
+    }
+    
+    .suggestion-icon {
+      width: clamp(16px, 3vw, 20px);
+      height: clamp(16px, 3vw, 20px);
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: clamp(10px, 2vw, 12px);
+    }
+    
+    .suggestion-icon.play {
+      background: rgba(34, 197, 94, 0.2);
+    }
+    
+    .suggestion-text {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .suggestion-title {
+      font-size: 14px;
+      color: #1A1A1A;
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+    
+    .suggestion-description {
+      font-size: clamp(9px, 2vw, 11px);
+      color: #9CA3AF;
+      line-height: 1.3;
+    }
+    
+    .input-area {
+      padding: 16px 24px 24px;
+      flex-shrink: 0;
+      background: #FFFFFF;
+    }
+    
+    .input-box {
+      background: #F5F5F5;
+      border-radius: clamp(12px, 3vw, 16px);
+      padding: clamp(8px, 2vw, 12px) 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .input-field {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      color: #9CA3AF;
+      min-width: 0;
+    }
+    
+    .send-button {
+      width: clamp(24px, 5vw, 32px);
+      height: clamp(24px, 5vw, 32px);
+      border-radius: clamp(4px, 1vw, 6px);
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 16px;
+      transition: background-color 0.2s ease;
+    }
+    
+    .send-button:hover {
+      background: #1A1A1A;
+    }
+    
+    /* Mobile-specific adjustments */
+    @media (max-width: 480px) {
+      .chat-header {
+        padding: 16px 20px;
+      }
+      
+      .header-text {
+        font-size: 18px;
+      }
+      
+      .chat-messages {
+        padding: 12px 16px;
+      }
+      
+      .message {
+        gap: 12px;
+      }
+      
+      .message-bubble {
+        font-size: 16px;
+        max-width: 85%;
+      }
+      
+      .message-content {
+        font-size: 16px;
+      }
+      
+      .suggestion-item {
+        padding: 8px 16px;
+        gap: 8px;
+      }
+      
+      .input-area {
+        padding: 12px 16px 16px;
+      }
+      
+      .input-box {
+        padding: 12px 16px;
+      }
+    }
+    
+    /* Tablet adjustments */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .chat-messages {
+        padding: 20px 24px;
+      }
+      
+      .chat-header {
+        padding: 20px 28px;
+      }
+    }
+    
+    /* Animation keyframes */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    .pulse-dot {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    
+    /* Better button interaction on mobile */
+    @media (max-width: 768px) {
+      .suggestion-item {
+        min-height: 44px;
+        align-items: center;
+      }
+      
+      .send-button {
+        min-width: 44px;
+        min-height: 44px;
+      }
+    }
+    
+    /* High DPI display adjustments */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .avatar img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+      }
+    }
+    
+  </style>
+  <script>
+    function handleSuggestionClick(type) {
+      const responses = {
+        'feature-trends': {
+          text: 'Key competitor feature trends this month:\n\n• OpenAI: Launched "Projects" for organizing conversations\n• Perplexity: Added real-time web search with citations\n• Claude: Introduced computer use capabilities\n• Gemini: Released 2.0 Flash with improved multimodal support\n\nNotable pattern: Focus shifting toward agent capabilities and tool use.',
+          hasFollowUp: false
+        },
+        'g2-sentiment': {
+          text: 'Recent G2 review highlight:\n\n"Switched from OpenAI to Claude last month. The context window is a game-changer for our codebase analysis. Only downside is the rate limits during peak hours."\n- Sarah Chen, Senior Developer at TechCorp\n⭐⭐⭐⭐ (4/5 stars)\n\nOverall sentiment: 87% positive (↑5% from last month)',
+          hasFollowUp: false
+        },
+        'pricing-campaign': {
+          text: 'Competitive Pricing Response Campaign:\n\n📅 Timeline: 2 weeks\n\n📢 Messaging:\n• "More than just pricing - it\'s about value"\n• Highlight superior context windows\n• Emphasize reliability and uptime\n\n📊 Channels:\n• Email blast to enterprise leads\n• LinkedIn thought leadership posts\n• Webinar: "Beyond API Pricing: Total Cost of Ownership"\n\n🎯 Target: Enterprise customers considering switching',
+          hasFollowUp: false
+        },
+        'battlecards': {
+          text: 'Sales Battlecard Updates:\n\n✅ Added Anthropic\'s new pricing structure\n✅ Updated competitive positioning matrix\n✅ New objection handlers for price concerns\n✅ ROI calculator with TCO comparison\n\nKey message: "20% price difference, 200% performance advantage"',
+          hasFollowUp: true,
+          followUpText: 'Download Updated Battlecard',
+          followUpAction: 'Download starting...'
+        }
+      };
+      
+      const chatMessages = document.querySelector('.chat-messages');
+      const existingResponse = document.querySelector('.response-message');
+      if (existingResponse) {
+        existingResponse.remove();
+      }
+      
+      const response = responses[type];
+      const responseHtml = `
+        <div class="message assistant response-message" style="opacity: 0; animation: slideIn 0.5s ease-out forwards; animation-delay: 0.2s;">
+          <div class="avatar">
+            <img src="images/ghost signal circle.png" alt="Ghost Signal">
+          </div>
+          <div class="message-bubble">
+            <div class="message-header">GHOST SIGNAL</div>
+            <div class="message-content" style="max-width: 100%; overflow-wrap: break-word; word-wrap: break-word;">
+              <div style="white-space: pre-wrap; line-height: 1.5;">${response.text}</div>
+              ${response.hasFollowUp ? `
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06);">
+                  <button onclick="alert('${response.followUpAction}')" style="
+                    background: #10B981;
+                    color: white;
+                    border: none;
+                    padding: 16px 24px;
+                    border-radius: clamp(4px, 1vw, 6px);
+                    font-size: 14px;
+                    cursor: pointer;
+                    font-family: inherit;
+                    transition: all 0.2s ease;
+                    font-weight: 500;
+                  " onmouseover="this.style.background='#059669'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#10B981'; this.style.transform='translateY(0)'">${response.followUpText}</button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      const suggestions = document.querySelector('.suggestions');
+      chatMessages.insertBefore(createElementFromHtml(responseHtml), suggestions);
+    }
+    
+    function createElementFromHtml(html) {
+      const template = document.createElement('template');
+      template.innerHTML = html.trim();
+      return template.content.firstChild;
+    }
+    
+    function handleInputSubmit() {
+      const input = document.querySelector('.input-field');
+      
+      if (input.value.trim()) {
+        input.value = '';
+        
+        const existingResponse = document.querySelector('.response-message');
+        if (existingResponse) {
+          existingResponse.remove();
+        }
+        
+        const promptHtml = `
+          <div class="message assistant response-message" style="opacity: 0; animation: slideIn 0.5s ease-out forwards; animation-delay: 0.2s;">
+            <div class="avatar">
+              <img src="images/ghost signal circle.png" alt="Ghost Signal">
+            </div>
+            <div class="message-bubble">
+              <div class="message-header">GHOST SIGNAL</div>
+              <div class="message-content" style="max-width: 100%; overflow-wrap: break-word; word-wrap: break-word;">
+                <div style="line-height: 1.5;">Try clicking one of the suggested follow-ups above to see how I can help you with competitive intelligence!</div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        const suggestions = document.querySelector('.suggestions');
+        const chatMessages = document.querySelector('.chat-messages');
+        chatMessages.insertBefore(createElementFromHtml(promptHtml), suggestions);
+      }
+    }
+
+  </script>
+</head>
+<body>
+  <div class="ghost-signal-chat-widget">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-icon">
+          <img src="images/ghost signal circle.png" alt="Ghost Signal">
+        </div>
+        <div class="header-text">Ghost Signal AI Co-Pilot</div>
+      </div>
+      
+      <div class="chat-messages">
+        <div class="message user">
+          <div class="avatar">
+            <div class="pulse-dot" style="width: clamp(14px, 3vw, 18px); height: clamp(14px, 3vw, 18px); background: #10b981; border-radius: 50%;"></div>
+          </div>
+          <div class="message-bubble">
+            <div class="message-content">What's happening with our competitor's pricing strategy?</div>
+          </div>
+        </div>
+        
+        <div class="message assistant">
+          <div class="avatar">
+            <img src="images/ghost signal circle.png" alt="Ghost Signal">
+          </div>
+          <div class="message-bubble">
+            <div class="message-content">
+              <span class="assistant-text">Significant changes detected including Anthropic reducing API enterprise pricing by 20%.</span>
+            </div>
+          </div>
+        </div>
+          
+        
+        <div class="suggestions">
+          <h3>Suggested follow-ups:</h3>
+          <div class="suggestion-item" onclick="handleSuggestionClick('feature-trends')">
+            <div class="suggestion-icon">?</div>
+            <div class="suggestion-text">
+              <div class="suggestion-title">Any monthly feature trends?</div>
+            </div>
+          </div>
+          <div class="suggestion-item" onclick="handleSuggestionClick('g2-sentiment')">
+            <div class="suggestion-icon">?</div>
+            <div class="suggestion-text">
+              <div class="suggestion-title">Any G2 sentiment changes?</div>
+            </div>
+          </div>
+          <div class="suggestion-item" onclick="handleSuggestionClick('pricing-campaign')">
+            <div class="suggestion-icon play">▶</div>
+            <div class="suggestion-text">
+              <div class="suggestion-title">Launch pricing response campaign</div>
+              <div class="suggestion-description">Counter with value-focused messaging</div>
+            </div>
+          </div>
+          <div class="suggestion-item" onclick="handleSuggestionClick('battlecards')">
+            <div class="suggestion-icon play">▶</div>
+            <div class="suggestion-text">
+              <div class="suggestion-title">Update sales battlecards</div>
+              <div class="suggestion-description">Reflect new pricing dynamics</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="input-area">
+        <div class="input-box">
+          <input type="text" class="input-field" placeholder="Ask Co-Pilot Anything..." onkeypress="if(event.key === 'Enter') handleInputSubmit()">
+          <div class="send-button" onclick="handleInputSubmit()">↑</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
