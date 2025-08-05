@@ -18,25 +18,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      isolation: isolate;
       position: relative;
       background: transparent;
-      filter: none;
-      -webkit-filter: none;
-      padding: 24px;
+      padding: 0;
+      box-sizing: border-box;
     }
     
     .ghost-signal-battlecard-widget .container {
-      width: 100%;
-      height: 100%;
-      max-width: 600px;
-      max-height: min(90vh, 700px);
+      width: calc(100% - 48px);
+      height: calc(100% - 48px);
+      max-width: 750px;
+      max-height: min(90vh, 600px);
       background: #FFFFFF;
-      border-radius: clamp(12px, 3vw, 20px);
+      border-radius: 16px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       position: relative;
       animation: fadeIn 0.5s ease-out;
+      margin: 24px;
+      box-sizing: border-box;
+      /* 3D transform for consistent corner rendering */
+      transform: translate3d(0, 0, 0);
+      -webkit-transform: translate3d(0, 0, 0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
     
     /* Chat View */
@@ -133,7 +138,7 @@
       border-radius: clamp(8px, 2vw, 12px);
       padding: 16px 24px;
       max-width: 85%;
-      font-size: 18px;
+      font-size: 12px;
       color: #1A1A1A;
       line-height: 1.4;
       word-wrap: break-word;
@@ -150,7 +155,7 @@
       border: none;
       padding: 16px 32px;
       border-radius: clamp(6px, 1.5vw, 8px);
-      font-size: 16px;
+      font-size: 11px;
       cursor: pointer;
       margin-top: 16px;
       opacity: 0;
@@ -206,7 +211,7 @@
     }
     
     .battlecard-title {
-      font-size: 20px;
+      font-size: 14px;
       font-weight: 600;
       flex: 1;
       min-width: 0;
@@ -219,7 +224,7 @@
       background: rgba(255, 255, 255, 0.2);
       padding: 8px 16px;
       border-radius: 12px;
-      font-size: 16px;
+      font-size: 12px;
       opacity: 0;
       animation: fadeIn 0.5s ease-out forwards;
       animation-delay: 4.5s;
@@ -247,7 +252,7 @@
     .section:nth-child(3) { animation-delay: 5.1s; }
     
     .section-title {
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 600;
       color: #1A1A1A;
       margin-bottom: 8px;
@@ -272,7 +277,7 @@
       background: #F5F5F5;
       border-radius: clamp(6px, 1.5vw, 8px);
       padding: 16px;
-      font-size: 14px;
+      font-size: 11px;
     }
     
     .comparison-row {
@@ -308,14 +313,14 @@
       border: 1px solid #FCD34D;
       border-radius: clamp(6px, 1.5vw, 8px);
       padding: 16px;
-      font-size: 14px;
+      font-size: 11px;
       color: #92400E;
       line-height: 1.3;
     }
     
     .objection-list {
       list-style: none;
-      font-size: 14px;
+      font-size: 11px;
       line-height: 1.5;
     }
     
@@ -352,7 +357,7 @@
     }
     
     .generating-text {
-      font-size: 20px;
+      font-size: 11px;
       color: #1A1A1A;
       margin-bottom: 24px;
     }
@@ -377,7 +382,7 @@
       border: none;
       padding: 16px 24px;
       border-radius: clamp(6px, 1.5vw, 8px);
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       margin-top: auto;
@@ -428,7 +433,7 @@
       }
       
       .battlecard-title {
-        font-size: 18px;
+        font-size: 11px;
       }
       
       .comparison-row {
@@ -531,7 +536,7 @@
         <div class="header-icon">
           <img src="https://cdn.prod.website-files.com/67d807ba14f6148f45dabc77/67e28f913414b26aa2719ffe_4.png" alt="Ghost Signal">
         </div>
-        <div style="font-size: 20px; font-weight: 600; color: #1A1A1A;">Ghost Signal Co-Pilot</div>
+        <div style="font-size: 14px; font-weight: 600; color: #1A1A1A;">Ghost Signal Co-Pilot</div>
       </div>
       
       <div class="chat-content">

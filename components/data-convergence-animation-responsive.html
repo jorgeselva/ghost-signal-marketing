@@ -7,26 +7,38 @@
     <style>
         body {
             margin: 0;
-            padding: 24px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 0;
+            background: #0F172A;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow: visible;
+            box-sizing: border-box;
         }
 
         .animation-container {
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
             max-width: 600px;
             max-height: min(90vh, 800px);
+            min-height: 700px;
             aspect-ratio: 1;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 24px;
+            background: #0F172A;
+            border-radius: 16px;
+            box-sizing: border-box;
+            /* 3D transform for consistent corner rendering */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            overflow: visible;
         }
 
         .ghost-signal {
@@ -477,9 +489,7 @@
         }
 
         /* Ensure proper stacking and overflow handling */
-        .animation-container {
-            overflow: visible;
-        }
+        /* Already set overflow: visible in main container */
 
         /* Safe area handling for mobile devices */
         @supports (padding: max(0px)) {
@@ -495,10 +505,7 @@
 </head>
 <body>
     <script>
-        // Auto-restart animation after completion
-        setTimeout(function() {
-            location.reload();
-        }, 15500); // Total animation time (13.5s) + 2s pause
+        // Animation controlled by parent page
     </script>
     <div class="animation-container">
         <!-- Ghost Signal Logo (center) -->

@@ -117,8 +117,32 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F3F4F6 100%);
             padding: 5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-20px, -20px) rotate(1deg); }
+            50% { transform: translate(20px, -10px) rotate(-1deg); }
+            75% { transform: translate(-10px, 20px) rotate(1deg); }
         }
         
         .hero-content {
@@ -128,6 +152,8 @@
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
         
         .hero-text h1 {
@@ -319,8 +345,8 @@
         
         .demo-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 4rem 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
             margin-top: 4rem;
         }
         
@@ -330,7 +356,7 @@
         }
         
         .demo-item h3 {
-            font-size: 1.25rem;
+            font-size: 0.875rem;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
             font-weight: 600;
@@ -339,7 +365,7 @@
         .demo-item p {
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             line-height: 1.5;
         }
         
@@ -351,6 +377,84 @@
             justify-content: center;
             align-items: center;
             padding: 0;
+        }
+        
+        /* Data Sources Section */
+        .data-sources-section {
+            padding: 5rem 0;
+            background: var(--dark-bg);
+            color: white;
+            overflow: hidden;
+        }
+        
+        .data-sources-header {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .data-sources-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .data-sources-header p {
+            font-size: 1.125rem;
+            color: #94A3B8;
+        }
+        
+        .data-sources-grid {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+        
+        .data-source-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .data-source-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .data-source-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .data-source-card h3.purple { color: var(--primary-color); }
+        .data-source-card h3.blue { color: #3B82F6; }
+        .data-source-card h3.green { color: #10B981; }
+        .data-source-card h3.yellow { color: #F59E0B; }
+        
+        .data-source-description {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+        
+        .data-source-frequency {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .data-animation-container {
+            width: 100%;
+            height: 800px;
+            position: relative;
+            margin-top: 4rem;
         }
         
         /* Why Section */
@@ -519,6 +623,13 @@
             color: white;
         }
         
+        /* Large screens - ensure 3 columns */
+        @media (min-width: 1200px) {
+            .demo-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 1024px) {
             .hero-content {
@@ -530,10 +641,6 @@
                 justify-content: center;
             }
             
-            .demo-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
             
             .demo-widget-wrapper {
                 height: auto;
@@ -541,8 +648,7 @@
             
             .chat-widget-wrapper,
             .email-widget-wrapper,
-            .battlecard-widget-wrapper,
-            .data-widget-wrapper {
+            .battlecard-widget-wrapper {
                 height: 600px;
             }
             
@@ -609,31 +715,59 @@
             position: absolute;
             top: 0;
             left: 0;
+            /* Apply border-radius to iframe for consistent corner rendering */
+            border-radius: 1rem;
+            /* Safari/WebKit border-radius fix */
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            mask-image: radial-gradient(white, black);
         }
         
         .hero-widget-container {
             width: 100%;
             max-width: 650px;
             height: 700px;
-            overflow: hidden;
-            border-radius: 1rem;
             position: relative;
             box-sizing: border-box;
+            border-radius: 16px;
+            overflow: hidden;
+            /* 3D transform to force GPU acceleration and proper clipping */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            /* Ensure proper rendering */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            perspective: 1000px;
+            background: transparent;
+        }
+        
+        /* Wrapper to ensure consistent corner rendering */
+        .hero-widget-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            /* 3D transform on wrapper too */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
         }
         
         .hero-widget-frame {
             width: 100%;
             height: 100%;
             border: none;
-            position: absolute;
-            top: 0;
-            left: 0;
+            display: block;
+            /* 3D transform on iframe */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
         }
         
         /* Demo widget containers - with padding for component shadows */
         .demo-widget-container {
             width: 100%;
-            max-width: 650px; /* Extra space for shadows */
+            max-width: 800px; /* Extra space for shadows */
             padding: 0;
             box-sizing: border-box;
             position: relative;
@@ -646,22 +780,74 @@
             overflow: hidden;
             border-radius: 1rem;
             position: relative;
+            /* Safari/WebKit border-radius fix */
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            mask-image: radial-gradient(white, black);
+            isolation: isolate;
         }
         
         /* All demo components should have consistent tall rectangle shape */
         .chat-widget-wrapper,
         .email-widget-wrapper,
-        .battlecard-widget-wrapper,
-        .data-widget-wrapper {
-            height: 800px;
+        .battlecard-widget-wrapper {
+            height: 600px;
         }
         
         .demo-widget-container {
             height: 100%;
         }
+        
+        /* Fallback for browsers without mask support */
+        @supports not (mask-image: radial-gradient(white, black)) {
+            .hero-widget-frame,
+            .widget-iframe {
+                clip-path: inset(0% 0% 0% 0% round clamp(12px, 3vw, 20px));
+            }
+            
+            .demo-widget-inner .widget-iframe {
+                clip-path: inset(0% 0% 0% 0% round 1rem);
+            }
+        }
     </style>
 </head>
 <body>
+    <script>
+        // Sequential autoplay controller
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframes = document.querySelectorAll('.demo-widget-wrapper iframe');
+            let currentIndex = 0;
+            const playDurations = [8000, 8000, 8000]; // 8 seconds each
+            
+            function resetAnimation(iframe) {
+                const src = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = src;
+                }, 50);
+            }
+            
+            function playNext() {
+                // Reset all iframes except the current one
+                iframes.forEach((iframe, index) => {
+                    if (index !== currentIndex) {
+                        resetAnimation(iframe);
+                    }
+                });
+                
+                // Play current animation
+                resetAnimation(iframes[currentIndex]);
+                
+                // Schedule next
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % iframes.length;
+                    playNext();
+                }, playDurations[currentIndex]);
+            }
+            
+            // Start the sequence after a short delay
+            setTimeout(playNext, 1000);
+        });
+    </script>
     <!-- Header -->
     <header class="header">
         <div class="header-content">
@@ -699,7 +885,9 @@
             </div>
             <div class="hero-widget">
                 <div class="hero-widget-container">
-                    <iframe src="components/main-chat-responsive.html" class="hero-widget-frame" scrolling="no"></iframe>
+                    <div class="hero-widget-wrapper">
+                        <iframe src="components/main-chat-responsive.html" class="hero-widget-frame" scrolling="no"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -823,18 +1011,47 @@
                     </div>
                 </div>
                 
-                <div class="demo-item">
-                    <h3>Data Source Integration</h3>
-                    <p>Connect all your data sources for comprehensive competitive intelligence coverage.</p>
-                    <div class="demo-widget-wrapper data-widget-wrapper">
-                        <div class="demo-widget-container">
-                            <div class="demo-widget-inner">
-                                <iframe src="components/data-convergence-animation-responsive.html" class="widget-iframe" scrolling="no"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
+        </div>
+    </section>
+    
+    <!-- Data Sources Section -->
+    <section class="data-sources-section">
+        <div class="data-sources-header">
+            <h2>How We Stay Current</h2>
+            <p>Every insight links back to the exact source. Trust the data.</p>
+        </div>
+        
+        <div class="data-sources-grid">
+            <div class="data-source-card">
+                <h3 class="purple">Live Pricing Pages</h3>
+                <p class="data-source-description">/pricing URLs, calculators, discount codes</p>
+                <p class="data-source-frequency">Refreshed every 6 hours</p>
+            </div>
+            
+            <div class="data-source-card">
+                <h3 class="blue">Product Change Logs</h3>
+                <p class="data-source-description">Release notes, GitHub tags, app store updates</p>
+                <p class="data-source-frequency">Daily summaries</p>
+            </div>
+            
+            <div class="data-source-card">
+                <h3 class="green">Voice of Customer</h3>
+                <p class="data-source-description">G2, Capterra, Reddit, X, Glassdoor</p>
+                <p class="data-source-frequency">Daily sentiment + top quotes</p>
+            </div>
+            
+            <div class="data-source-card">
+                <h3 class="yellow">Private Signals</h3>
+                <p class="data-source-description">Gong transcripts, Intercom tickets, win-loss</p>
+                <p class="data-source-frequency">Real-time processing</p>
+            </div>
+        </div>
+        
+        <div class="data-animation-container">
+            <iframe src="components/data-convergence-animation-responsive.html" 
+                    style="width: 100%; height: 100%; border: none;" 
+                    scrolling="no"></iframe>
         </div>
     </section>
     
