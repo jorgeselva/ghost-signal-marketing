@@ -3,7 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghost Signal - AI-Powered Competitive Intelligence</title>
+    <title>Ghost Signal - Real-Time Competitive Intelligence | Never Get Blindsided</title>
+    <meta name="description" content="Ghost Signal monitors your competitors 24/7. Get instant alerts on pricing changes, new features, and strategic moves. Turn competitive threats into wins.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ghostsignal.com/">
+    <meta property="og:title" content="Ghost Signal - Never Get Blindsided by Competitors Again">
+    <meta property="og:description" content="Real-time competitive intelligence that alerts you instantly when competitors make moves that matter. Start free trial.">
+    <meta property="og:image" content="https://ghostsignal.com/images/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ghostsignal.com/">
+    <meta property="twitter:title" content="Ghost Signal - Real-Time Competitive Intelligence">
+    <meta property="twitter:description" content="Monitor competitors 24/7. Get instant alerts. Win more deals. Start free trial.">
+    <meta property="twitter:image" content="https://ghostsignal.com/images/twitter-image.png">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PQV34TVF');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Ghost Signal",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Real-time competitive intelligence platform that monitors competitors 24/7 and alerts teams instantly when they make strategic moves.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2025-12-31",
+        "description": "14-day free trial"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "127"
+      }
+    }
+    </script>
+    
     <link rel="stylesheet" href="responsive-framework.css">
     <style>
         :root {
@@ -92,7 +139,7 @@
         
         .nav-cta {
             background: var(--primary-color);
-            color: white;
+            color: white !important;
             padding: 0.5rem 1.5rem;
             border-radius: 0.5rem;
             text-decoration: none;
@@ -121,6 +168,44 @@
             padding: 5rem 2rem;
             position: relative;
             overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 30%,
+                rgba(102, 126, 234, 0.08) 35%,
+                rgba(102, 126, 234, 0.12) 40%,
+                rgba(118, 75, 162, 0.08) 45%,
+                transparent 50%,
+                transparent 70%,
+                rgba(118, 75, 162, 0.08) 75%,
+                rgba(102, 126, 234, 0.12) 80%,
+                rgba(102, 126, 234, 0.08) 85%,
+                transparent 90%);
+            animation: gradientShift 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% {
+                transform: translateX(0%) translateY(0%);
+            }
+            25% {
+                transform: translateX(10%) translateY(-10%);
+            }
+            50% {
+                transform: translateX(-10%) translateY(10%);
+            }
+            75% {
+                transform: translateX(5%) translateY(-5%);
+            }
         }
         
         .hero::before {
@@ -345,14 +430,17 @@
         
         .demo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
             margin-top: 4rem;
+            align-items: stretch;
         }
         
         .demo-item {
             display: flex;
             flex-direction: column;
+            height: 100%;
+            transform-origin: center center;
         }
         
         .demo-item h3 {
@@ -367,10 +455,12 @@
             margin-bottom: 1.5rem;
             font-size: 0.75rem;
             line-height: 1.5;
+            min-height: 2.25rem;
         }
         
         .demo-widget-wrapper {
             width: 100%;
+            height: 650px;
             background: transparent;
             position: relative;
             display: flex;
@@ -410,44 +500,60 @@
             max-width: var(--max-width);
             margin: 0 auto;
             padding: 0 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
             margin-bottom: 4rem;
+            flex-wrap: wrap;
         }
         
         .data-source-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
             transition: all 0.3s ease;
         }
         
-        .data-source-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
+        .data-source-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .data-source-card:hover .data-source-icon {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.25));
+            border-color: rgba(102, 126, 234, 0.5);
         }
         
         .data-source-card h3 {
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: #ffffff;
+            font-weight: 600;
         }
         
-        .data-source-card h3.purple { color: var(--primary-color); }
-        .data-source-card h3.blue { color: #3B82F6; }
-        .data-source-card h3.green { color: #10B981; }
-        .data-source-card h3.yellow { color: #F59E0B; }
-        
         .data-source-description {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 150px;
+            line-height: 1.4;
+            margin-top: 0.25rem;
         }
         
         .data-source-frequency {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.6);
+            display: none;
         }
         
         .data-animation-container {
@@ -504,10 +610,24 @@
         
         /* CTA Section */
         .cta-section {
-            background: var(--dark-bg);
-            color: white;
+            background: linear-gradient(135deg, #f8f9fb 0%, #e9ecf1 100%);
+            color: var(--text-primary);
             padding: 5rem 2rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+            pointer-events: none;
         }
         
         .cta-content {
@@ -523,7 +643,7 @@
         .cta-content p {
             font-size: 1.25rem;
             margin-bottom: 2rem;
-            color: #CBD5E1;
+            color: var(--text-secondary);
         }
         
         /* Footer */
@@ -630,6 +750,67 @@
             }
         }
         
+        /* Tablet - 2 columns */
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .demo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+        
+        /* Mobile - Stack items */
+        @media (max-width: 767px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                margin-top: 2rem;
+            }
+            
+            .demo-item h3 {
+                font-size: 1rem;
+            }
+            
+            .demo-item p {
+                font-size: 0.875rem;
+                min-height: auto;
+            }
+            
+            .demo-widget-wrapper {
+                height: 500px;
+            }
+            
+            .demo-section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .section-header p {
+                font-size: 1rem;
+            }
+            
+            .section-header {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        /* Extra small mobile */
+        @media (max-width: 480px) {
+            .demo-widget-wrapper {
+                height: 400px;
+            }
+            
+            .demo-grid {
+                gap: 1.5rem;
+            }
+            
+            .section-header h2 {
+                font-size: 1.75rem;
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 1024px) {
             .hero-content {
@@ -643,7 +824,7 @@
             
             
             .demo-widget-wrapper {
-                height: auto;
+                height: 600px;
             }
             
             .chat-widget-wrapper,
@@ -767,7 +948,7 @@
         /* Demo widget containers - with padding for component shadows */
         .demo-widget-container {
             width: 100%;
-            max-width: 800px; /* Extra space for shadows */
+            height: 100%;
             padding: 0;
             box-sizing: border-box;
             position: relative;
@@ -786,15 +967,11 @@
             isolation: isolate;
         }
         
-        /* All demo components should have consistent tall rectangle shape */
+        /* Ensure consistent height for all demo components */
         .chat-widget-wrapper,
         .email-widget-wrapper,
         .battlecard-widget-wrapper {
-            height: 600px;
-        }
-        
-        .demo-widget-container {
-            height: 100%;
+            height: 650px;
         }
         
         /* Fallback for browsers without mask support */
@@ -811,41 +988,196 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQV34TVF"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <script>
-        // Sequential autoplay controller
+        // GTM Enhanced Tracking
         document.addEventListener('DOMContentLoaded', function() {
-            const iframes = document.querySelectorAll('.demo-widget-wrapper iframe');
-            let currentIndex = 0;
-            const playDurations = [8000, 8000, 8000]; // 8 seconds each
+            // Track scroll depth
+            let scrollDepths = [25, 50, 75, 90];
+            let scrolledDepths = [];
             
-            function resetAnimation(iframe) {
-                const src = iframe.src;
-                iframe.src = '';
-                setTimeout(() => {
-                    iframe.src = src;
-                }, 50);
-            }
+            window.addEventListener('scroll', function() {
+                let scrollPercent = (window.scrollY + window.innerHeight) / document.body.scrollHeight * 100;
+                
+                scrollDepths.forEach(depth => {
+                    if (scrollPercent >= depth && !scrolledDepths.includes(depth)) {
+                        scrolledDepths.push(depth);
+                        gtag('event', 'scroll', {
+                            'event_category': 'Engagement',
+                            'event_label': 'Scroll Depth',
+                            'value': depth
+                        });
+                    }
+                });
+            });
             
-            function playNext() {
-                // Reset all iframes except the current one
-                iframes.forEach((iframe, index) => {
-                    if (index !== currentIndex) {
-                        resetAnimation(iframe);
+            // Track time on page
+            let startTime = Date.now();
+            window.addEventListener('beforeunload', function() {
+                let timeOnPage = Math.round((Date.now() - startTime) / 1000);
+                gtag('event', 'timing_complete', {
+                    'name': 'time_on_page',
+                    'value': timeOnPage,
+                    'event_category': 'Engagement'
+                });
+            });
+            
+            // Track demo widget interactions
+            document.querySelectorAll('.widget-iframe').forEach((iframe, index) => {
+                iframe.addEventListener('mouseenter', function() {
+                    gtag('event', 'demo_hover', {
+                        'event_category': 'Demo',
+                        'event_label': ['Chat', 'Digest', 'Battlecard'][index]
+                    });
+                });
+            });
+            
+            // Sequential animation controller for demo widgets
+            const demoWidgets = document.querySelectorAll('.demo-item .widget-iframe');
+            let currentWidget = 0;
+            let cycleTimeout;
+            let isAnimating = false;
+            
+            // Animation durations for each component (in milliseconds)
+            const animationDurations = [
+                10000,  // Chat animation: 5.3s animation + 4.7s viewing play details screen
+                6000,   // Digest email: 2.7s animation + 3.3s viewing final state
+                8000    // Battlecard: 5.5s full animation + 2.5s viewing final battlecard
+            ];
+            
+            function activateWidget(index) {
+                // Clear any existing timeout
+                if (cycleTimeout) {
+                    clearTimeout(cycleTimeout);
+                }
+                
+                demoWidgets.forEach((widget, i) => {
+                    const container = widget.closest('.demo-item');
+                    if (i === index) {
+                        // Highlight this widget
+                        container.style.opacity = '1';
+                        container.style.transform = 'none';
+                        container.style.zIndex = '2';
+                        // Send start message to iframe to begin animation
+                        // Wait longer to ensure iframe is fully loaded and ready
+                        setTimeout(() => {
+                            try {
+                                widget.contentWindow.postMessage('start', '*');
+                            } catch (e) {
+                                console.log('Could not post message to iframe:', e);
+                            }
+                        }, 500);
+                    } else {
+                        // Dim other widgets but keep them visible
+                        container.style.opacity = '0.6';
+                        container.style.transform = 'none';
+                        container.style.zIndex = '1';
+                        // Send stop message - they'll keep their final state
+                        try {
+                            widget.contentWindow.postMessage('stop', '*');
+                        } catch (e) {
+                            console.log('Could not post message to iframe');
+                        }
                     }
                 });
                 
-                // Play current animation
-                resetAnimation(iframes[currentIndex]);
-                
-                // Schedule next
-                setTimeout(() => {
-                    currentIndex = (currentIndex + 1) % iframes.length;
-                    playNext();
-                }, playDurations[currentIndex]);
+                // Schedule next widget based on current widget's duration
+                const duration = animationDurations[index] || 8000;
+                cycleTimeout = setTimeout(() => {
+                    cycleWidgets();
+                }, duration);
             }
             
-            // Start the sequence after a short delay
-            setTimeout(playNext, 1000);
+            function cycleWidgets() {
+                currentWidget = (currentWidget + 1) % demoWidgets.length;
+                activateWidget(currentWidget);
+            }
+            
+            // Start the cycle when demo section is visible
+            const demoSection = document.querySelector('.demo-section');
+            if (demoWidgets.length > 0 && demoSection) {
+                // Add transition to demo items
+                document.querySelectorAll('.demo-item').forEach((item, index) => {
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    item.style.position = 'relative';
+                    // Set initial state - all visible but first is highlighted
+                    if (index === 0) {
+                        item.style.opacity = '1';
+                        item.style.transform = 'none';
+                        item.style.zIndex = '2';
+                    } else {
+                        item.style.opacity = '0.6';
+                        item.style.transform = 'none';
+                        item.style.zIndex = '1';
+                    }
+                });
+                
+                // Wait for iframes to load
+                let loadedCount = 0;
+                demoWidgets.forEach((widget, index) => {
+                    widget.addEventListener('load', () => {
+                        loadedCount++;
+                        console.log(`Iframe ${index + 1} loaded (${loadedCount}/${demoWidgets.length})`);
+                        if (loadedCount === demoWidgets.length) {
+                            // All iframes loaded - wait a bit more for content to initialize
+                            setTimeout(() => {
+                                console.log('All iframes loaded, initializing...');
+                                demoWidgets.forEach((w, i) => {
+                                    try {
+                                        if (i !== 0) {
+                                            // Put non-first widgets in stopped state
+                                            w.contentWindow.postMessage('stop', '*');
+                                        }
+                                    } catch (e) {
+                                        console.log('Error initializing widget:', e);
+                                    }
+                                });
+                            }, 200);
+                        }
+                    });
+                });
+                
+                // Start cycling when demo section comes into view
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Start first widget after ensuring all are loaded
+                            setTimeout(() => {
+                                if (loadedCount === demoWidgets.length) {
+                                    console.log('Starting animation cycle...');
+                                    activateWidget(0);
+                                } else {
+                                    // Wait for all to load then start
+                                    const checkLoaded = setInterval(() => {
+                                        if (loadedCount === demoWidgets.length) {
+                                            clearInterval(checkLoaded);
+                                            console.log('All loaded, starting animation cycle...');
+                                            activateWidget(0);
+                                        }
+                                    }, 100);
+                                }
+                            }, 1000);
+                            
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.3 });
+                
+                observer.observe(demoSection);
+            }
+            
+            // Track external link clicks
+            document.querySelectorAll('a[href^="http"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    gtag('event', 'click', {
+                        'event_category': 'Outbound',
+                        'event_label': link.href
+                    });
+                });
+            });
         });
     </script>
     <!-- Header -->
@@ -862,7 +1194,7 @@
                 <a href="#demo">Demo</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#resources">Resources</a>
-                <a href="#" class="nav-cta">Start Free Trial</a>
+                <a href="#" class="nav-cta" onclick="gtag('event', 'click', {'event_category': 'CTA', 'event_label': 'Navigation Get Started'});">Get Started Free</a>
             </nav>
             
             <button class="mobile-menu-btn">☰</button>
@@ -873,14 +1205,14 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Stay Ahead with <span>AI-Powered</span> Competitive Intelligence</h1>
-                <p>Monitor competitors, analyze market trends, and generate winning strategies in real-time with Ghost Signal's AI co-pilot.</p>
+                <h1>Your Competitors Just Changed Their Pricing. <span>You Already Know.</span></h1>
+                <p>Ghost Signal monitors your competitors 24/7 and alerts your team instantly when they make moves that matter. No more surprises.</p>
                 <div class="hero-buttons">
-                    <a href="#" class="btn-primary">
-                        Start Free Trial
+                    <a href="#" class="btn-primary" onclick="gtag('event', 'click', {'event_category': 'CTA', 'event_label': 'Hero Get Started'});">
+                        Get Started Free
                         <span>→</span>
                     </a>
-                    <a href="#demo" class="btn-secondary">Watch Demo</a>
+                    <a href="#demo" class="btn-secondary" onclick="gtag('event', 'click', {'event_category': 'Demo', 'event_label': 'Hero See Demo'});">See It In Action</a>
                 </div>
             </div>
             <div class="hero-widget">
@@ -893,74 +1225,50 @@
         </div>
     </section>
     
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stats-content">
-            <h2>The market's most trusted competitive intelligence platform</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">$4.51M</div>
-                    <div class="stat-label">Revenue Generated</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">$122.1K</div>
-                    <div class="stat-label">Average Deal Size</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">$138.8B</div>
-                    <div class="stat-label">Pipeline Influenced</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">50,043</div>
-                    <div class="stat-label">Competitive Insights</div>
-                </div>
-            </div>
-        </div>
-    </section>
     
     <!-- Features Section -->
     <section class="features" id="features">
         <div class="features-content">
             <div class="section-header">
-                <h2>Embrace the Innovation</h2>
-                <p>Powered by advanced AI to deliver real-time competitive intelligence that drives winning strategies</p>
+                <h2>Stop Reacting. Start Winning.</h2>
+                <p>Turn competitive chaos into your unfair advantage with real-time intelligence.</p>
             </div>
             
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🔍</div>
-                    <h3>Real-time Monitoring</h3>
-                    <p>Track competitor moves across pricing, features, and market positioning as they happen with automated alerts.</p>
+                    <h3>Know Before They Close</h3>
+                    <p>Get alerted when competitors drop pricing or launch features targeting your deals.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">📊</div>
-                    <h3>AI-Powered Analysis</h3>
-                    <p>Deep learning algorithms analyze patterns and predict competitor strategies before they impact your business.</p>
+                    <h3>Win More, Faster</h3>
+                    <p>AI-powered insights tell you exactly how to position against any competitor, in any deal.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">🎯</div>
-                    <h3>Strategic Plays</h3>
-                    <p>Get actionable recommendations and auto-generated campaigns to counter competitive threats effectively.</p>
+                    <h3>Your Response, Ready Now</h3>
+                    <p>Competitor changed their strategy? Get proven counter-moves instantly.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">📈</div>
-                    <h3>Market Intelligence</h3>
-                    <p>Monitor G2 reviews, social sentiment, and market trends to understand shifting customer preferences.</p>
+                    <h3>Read Their Reviews First</h3>
+                    <p>Monitor what customers really say about competitors across G2, Reddit, and social.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
-                    <h3>Instant Battlecards</h3>
-                    <p>Auto-updated sales enablement materials that reflect the latest competitive dynamics and win strategies.</p>
+                    <h3>Always Current Battlecards</h3>
+                    <p>No more outdated PDFs. Your team gets live intel that updates automatically.</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">🤖</div>
-                    <h3>Co-Pilot Assistant</h3>
-                    <p>Natural language interface to query competitive data and get instant strategic recommendations.</p>
+                    <h3>Answers in Seconds</h3>
+                    <p>Ask any competitive question. Get data-backed answers instantly.</p>
                 </div>
             </div>
         </div>
@@ -970,14 +1278,14 @@
     <section class="demo-section" id="demo">
         <div class="demo-content">
             <div class="section-header">
-                <h2>See Ghost Signal in Action</h2>
-                <p>Experience how our AI transforms competitive intelligence into strategic advantage</p>
+                <h2>See It In Action</h2>
+                <p>From alert to action in seconds. Watch how teams stay ahead.</p>
             </div>
             
             <div class="demo-grid">
                 <div class="demo-item">
-                    <h3>Chat with AI Co-Pilot</h3>
-                    <p>Ask questions about competitors and get instant insights with actionable recommendations.</p>
+                    <h3>Turn Insights Into Actions</h3>
+                    <p>With expertly curated GTM plays tailored to your competitive landscape.</p>
                     <div class="demo-widget-wrapper chat-widget-wrapper">
                         <div class="demo-widget-container">
                             <div class="demo-widget-inner">
@@ -988,8 +1296,8 @@
                 </div>
                 
                 <div class="demo-item">
-                    <h3>Weekly Intelligence Digest</h3>
-                    <p>Stay informed with automated competitive intelligence summaries delivered to your inbox.</p>
+                    <h3>Weekly Digest That Matters</h3>
+                    <p>Only the intel that impacts your pipeline, delivered every Monday.</p>
                     <div class="demo-widget-wrapper email-widget-wrapper">
                         <div class="demo-widget-container">
                             <div class="demo-widget-inner">
@@ -1000,8 +1308,8 @@
                 </div>
                 
                 <div class="demo-item">
-                    <h3>Instant Battlecard Generation</h3>
-                    <p>Create and update sales battlecards automatically based on latest competitive data.</p>
+                    <h3>Live Battlecards</h3>
+                    <p>Always current. Always accurate. Updated automatically as competitors evolve.</p>
                     <div class="demo-widget-wrapper battlecard-widget-wrapper">
                         <div class="demo-widget-container">
                             <div class="demo-widget-inner">
@@ -1018,33 +1326,37 @@
     <!-- Data Sources Section -->
     <section class="data-sources-section">
         <div class="data-sources-header">
-            <h2>How We Stay Current</h2>
-            <p>Every insight links back to the exact source. Trust the data.</p>
+            <h2>Always Know. Never Guess.</h2>
+            <p>Real sources. Real-time updates. Real competitive advantage.</p>
         </div>
         
         <div class="data-sources-grid">
             <div class="data-source-card">
-                <h3 class="purple">Live Pricing Pages</h3>
-                <p class="data-source-description">/pricing URLs, calculators, discount codes</p>
-                <p class="data-source-frequency">Refreshed every 6 hours</p>
+                <div class="data-source-icon">💰</div>
+                <h3>Pricing & Packaging</h3>
+                <p class="data-source-description">Monitor pricing pages, calculators, promos</p>
+                <p class="data-source-frequency">Every 6 hours</p>
             </div>
             
             <div class="data-source-card">
-                <h3 class="blue">Product Change Logs</h3>
-                <p class="data-source-description">Release notes, GitHub tags, app store updates</p>
-                <p class="data-source-frequency">Daily summaries</p>
+                <div class="data-source-icon">🚀</div>
+                <h3>Product Releases</h3>
+                <p class="data-source-description">Features, updates, roadmap changes</p>
+                <p class="data-source-frequency">Real-time</p>
             </div>
             
             <div class="data-source-card">
-                <h3 class="green">Voice of Customer</h3>
-                <p class="data-source-description">G2, Capterra, Reddit, X, Glassdoor</p>
-                <p class="data-source-frequency">Daily sentiment + top quotes</p>
+                <div class="data-source-icon">⭐</div>
+                <h3>Customer Sentiment</h3>
+                <p class="data-source-description">Reviews, social mentions, forums</p>
+                <p class="data-source-frequency">Continuous</p>
             </div>
             
             <div class="data-source-card">
-                <h3 class="yellow">Private Signals</h3>
-                <p class="data-source-description">Gong transcripts, Intercom tickets, win-loss</p>
-                <p class="data-source-frequency">Real-time processing</p>
+                <div class="data-source-icon">📊</div>
+                <h3>Your Intel</h3>
+                <p class="data-source-description">CRM data, call recordings, win/loss</p>
+                <p class="data-source-frequency">Instant</p>
             </div>
         </div>
         
@@ -1055,42 +1367,13 @@
         </div>
     </section>
     
-    <!-- Why Ghost Signal -->
-    <section class="why-section">
-        <div class="why-content">
-            <div class="section-header">
-                <h2>Why Ghost Signal</h2>
-                <p>Leading companies trust Ghost Signal to stay ahead of the competition</p>
-            </div>
-            
-            <div class="why-grid">
-                <div class="why-card">
-                    <div class="why-number">10x</div>
-                    <h3>Faster Intelligence</h3>
-                    <p>Real-time alerts mean you know about competitor moves before they impact your business</p>
-                </div>
-                
-                <div class="why-card">
-                    <div class="why-number">73%</div>
-                    <h3>Win Rate Increase</h3>
-                    <p>Teams using Ghost Signal close more deals with better competitive positioning</p>
-                </div>
-                
-                <div class="why-card">
-                    <div class="why-number">5h</div>
-                    <h3>Weekly Time Saved</h3>
-                    <p>Automate competitive research and focus on strategic decision making</p>
-                </div>
-            </div>
-        </div>
-    </section>
     
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="cta-content">
-            <h2>Ready to outsmart the competition?</h2>
-            <p>Join leading teams using Ghost Signal to win more deals and stay ahead of market changes.</p>
-            <a href="#" class="btn-primary">Start Your Free Trial</a>
+            <h2>Stop Losing Deals to Competitor Surprises</h2>
+            <p>Get instant alerts when competitors change pricing, launch features, or make strategic moves.</p>
+            <a href="#" class="btn-primary" onclick="gtag('event', 'click', {'event_category': 'CTA', 'event_label': 'Footer Start Trial'});">Start Free 14-Day Trial</a>
         </div>
     </section>
     
@@ -1103,7 +1386,7 @@
                         <img src="images/Ghost Signal Transparent.png" alt="Ghost Signal">
                     </div>
                 </div>
-                <p>AI-powered competitive intelligence that helps you stay ahead of the market and win more deals.</p>
+                <p>Real-time competitive intelligence that turns market changes into your competitive advantage.</p>
                 <div class="social-links">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>
@@ -1134,10 +1417,10 @@
             <div class="footer-column">
                 <h4>Resources</h4>
                 <ul>
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">API Reference</a></li>
-                    <li><a href="#">Guides</a></li>
-                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">API Docs</a></li>
+                    <li><a href="#">Best Practices</a></li>
+                    <li><a href="#">Contact Support</a></li>
                 </ul>
             </div>
             
@@ -1153,8 +1436,12 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2025 Ghost Signal. All rights reserved.</p>
-            <p>Made with ❤️ for competitive teams</p>
+            <p>&copy; 2025 Ghost Signal, Inc. All rights reserved.</p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Privacy Policy</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Security</a>
+            </div>
         </div>
     </footer>
 </body>

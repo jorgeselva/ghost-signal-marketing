@@ -505,7 +505,15 @@
 </head>
 <body>
     <script>
-        // Animation controlled by parent page
+        // Replay animation every 15 seconds
+        function restartAnimation() {
+            const container = document.querySelector('.animation-container');
+            const clonedContainer = container.cloneNode(true);
+            container.parentNode.replaceChild(clonedContainer, container);
+        }
+        
+        // Initial play, then replay every 15 seconds
+        setInterval(restartAnimation, 15000);
     </script>
     <div class="animation-container">
         <!-- Ghost Signal Logo (center) -->
@@ -562,13 +570,13 @@
                 <span class="thinking-dots">...</span>
             </h4>
             <div class="insight insight-1">
-                <span class="insight-text">💰 Anthropic reduced API pricing by 20% - affecting 3 pipeline deals</span>
+                <span class="insight-text">⚠️ Anthropic just reduced Claude API pricing 20% - prep your retention plays</span>
             </div>
             <div class="insight insight-2">
-                <span class="insight-text">🚀 OpenAI launched "Projects" competing with Claude for Business</span>
+                <span class="insight-text">🎯 OpenAI launching "Projects" feature - directly competes with your Workspaces</span>
             </div>
             <div class="insight insight-3">
-                <span class="insight-text">⭐ Your G2 sentiment improved to 4.6/5 (up from 4.3)</span>
+                <span class="insight-text">📈 G2 momentum: You gained 47 reviews vs competitor's 12 this quarter</span>
             </div>
         </div>
     </div>
