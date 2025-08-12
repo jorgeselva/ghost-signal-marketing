@@ -445,33 +445,6 @@
             position: relative;
         }
         
-        .demo-item:hover .demo-widget-wrapper {
-            transform: scale(0.98);
-        }
-        
-        .demo-item::after {
-            content: '↻ Click to replay';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(102, 126, 234, 0.95);
-            color: white;
-            padding: 0.75rem 1.25rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 10;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-        
-        .demo-item:hover::after {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.05);
-        }
         
         .demo-item h3 {
             font-size: 0.875rem;
@@ -841,10 +814,6 @@
                 margin-bottom: 1.5rem;
             }
             
-            .demo-item::after {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.75rem;
-            }
         }
         
         /* Extra small mobile */
