@@ -793,8 +793,73 @@
         @media (max-width: 767px) {
             .demo-grid {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 1.5rem;
                 margin-top: 2rem;
+            }
+            
+            .demo-item {
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 1rem;
+                padding: 1rem;
+                margin: 0 0.5rem;
+            }
+            
+            .demo-item h3 {
+                font-size: 1.125rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .demo-item p {
+                font-size: 0.875rem;
+                min-height: auto;
+                margin-bottom: 1rem;
+                color: rgba(255, 255, 255, 0.8);
+            }
+            
+            .demo-widget-wrapper {
+                height: 450px;
+                border-radius: 0.75rem;
+                overflow: hidden;
+            }
+            
+            .demo-section {
+                padding: 2rem 1rem;
+            }
+            
+            .section-header h2 {
+                font-size: 1.75rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .section-header p {
+                font-size: 0.9rem;
+                color: rgba(255, 255, 255, 0.8);
+            }
+            
+            .section-header {
+                margin-bottom: 1.5rem;
+            }
+            
+            .demo-item::after {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* Extra small mobile */
+        @media (max-width: 480px) {
+            .demo-widget-wrapper {
+                height: 380px;
+            }
+            
+            .demo-grid {
+                gap: 1.25rem;
+            }
+            
+            .demo-item {
+                margin: 0 0.25rem;
+                padding: 0.875rem;
             }
             
             .demo-item h3 {
@@ -802,43 +867,15 @@
             }
             
             .demo-item p {
-                font-size: 0.875rem;
-                min-height: auto;
-            }
-            
-            .demo-widget-wrapper {
-                height: 500px;
-            }
-            
-            .demo-section {
-                padding: 3rem 1.5rem;
+                font-size: 0.8rem;
             }
             
             .section-header h2 {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
             
             .section-header p {
-                font-size: 1rem;
-            }
-            
-            .section-header {
-                margin-bottom: 2rem;
-            }
-        }
-        
-        /* Extra small mobile */
-        @media (max-width: 480px) {
-            .demo-widget-wrapper {
-                height: 400px;
-            }
-            
-            .demo-grid {
-                gap: 1.5rem;
-            }
-            
-            .section-header h2 {
-                font-size: 1.75rem;
+                font-size: 0.875rem;
             }
         }
         
@@ -1277,8 +1314,8 @@
             
             <div class="demo-grid">
                 <div class="demo-item" onclick="restartAnimation(this)">
-                    <h3>Turn Insights Into Actions</h3>
-                    <p>With expertly curated GTM plays tailored to your competitive landscape.</p>
+                    <h3>Real-Time Alerts</h3>
+                    <p>Instant competitive intelligence in Slack.</p>
                     <div class="demo-widget-wrapper chat-widget-wrapper">
                         <div class="demo-widget-container">
                             <div class="demo-widget-inner">
@@ -1289,8 +1326,8 @@
                 </div>
                 
                 <div class="demo-item" onclick="restartAnimation(this)">
-                    <h3>Weekly Digest That Matters</h3>
-                    <p>Only the intel that impacts your pipeline, delivered every Monday.</p>
+                    <h3>Weekly Digest</h3>
+                    <p>Key intel delivered every Monday.</p>
                     <div class="demo-widget-wrapper email-widget-wrapper">
                         <div class="demo-widget-container">
                             <div class="demo-widget-inner">
@@ -1302,7 +1339,7 @@
                 
                 <div class="demo-item" onclick="restartAnimation(this)">
                     <h3>Live Battlecards</h3>
-                    <p>Always current. Always accurate. Updated automatically as competitors evolve.</p>
+                    <p>Auto-updated competitive positioning.</p>
                     <div class="demo-widget-wrapper battlecard-widget-wrapper">
                         <div class="demo-widget-container">
                             <div class="demo-widget-inner">
