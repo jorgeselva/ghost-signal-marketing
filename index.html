@@ -441,6 +441,36 @@
             flex-direction: column;
             height: 100%;
             transform-origin: center center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .demo-item:hover .demo-widget-wrapper {
+            transform: scale(0.98);
+        }
+        
+        .demo-item::after {
+            content: '↻ Click to replay';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(102, 126, 234, 0.95);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .demo-item:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.05);
         }
         
         .demo-item h3 {
@@ -467,6 +497,7 @@
             justify-content: center;
             align-items: center;
             padding: 0;
+            transition: transform 0.3s ease;
         }
         
         /* Data Sources Section */
@@ -1179,6 +1210,18 @@
                 });
             });
         });
+        
+        // Function to restart animation when demo item is clicked
+        function restartAnimation(element) {
+            const iframe = element.querySelector('.widget-iframe');
+            if (iframe) {
+                const src = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = src;
+                }, 10);
+            }
+        }
     </script>
     <!-- Header -->
     <header class="header">
@@ -1190,7 +1233,6 @@
             </a>
             
             <nav class="nav-menu">
-                <a href="#features">Features</a>
                 <a href="#demo">Demo</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#resources">Resources</a>
@@ -1225,55 +1267,6 @@
         </div>
     </section>
     
-    
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="features-content">
-            <div class="section-header">
-                <h2>Stop Reacting. Start Winning.</h2>
-                <p>Turn competitive chaos into your unfair advantage with real-time intelligence.</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Know Before They Close</h3>
-                    <p>Get alerted when competitors drop pricing or launch features targeting your deals.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Win More, Faster</h3>
-                    <p>AI-powered insights tell you exactly how to position against any competitor, in any deal.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Your Response, Ready Now</h3>
-                    <p>Competitor changed their strategy? Get proven counter-moves instantly.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Read Their Reviews First</h3>
-                    <p>Monitor what customers really say about competitors across G2, Reddit, and social.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Always Current Battlecards</h3>
-                    <p>No more outdated PDFs. Your team gets live intel that updates automatically.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>Answers in Seconds</h3>
-                    <p>Ask any competitive question. Get data-backed answers instantly.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
     <!-- Demo Section -->
     <section class="demo-section" id="demo">
         <div class="demo-content">
@@ -1283,7 +1276,7 @@
             </div>
             
             <div class="demo-grid">
-                <div class="demo-item">
+                <div class="demo-item" onclick="restartAnimation(this)">
                     <h3>Turn Insights Into Actions</h3>
                     <p>With expertly curated GTM plays tailored to your competitive landscape.</p>
                     <div class="demo-widget-wrapper chat-widget-wrapper">
@@ -1295,7 +1288,7 @@
                     </div>
                 </div>
                 
-                <div class="demo-item">
+                <div class="demo-item" onclick="restartAnimation(this)">
                     <h3>Weekly Digest That Matters</h3>
                     <p>Only the intel that impacts your pipeline, delivered every Monday.</p>
                     <div class="demo-widget-wrapper email-widget-wrapper">
@@ -1307,7 +1300,7 @@
                     </div>
                 </div>
                 
-                <div class="demo-item">
+                <div class="demo-item" onclick="restartAnimation(this)">
                     <h3>Live Battlecards</h3>
                     <p>Always current. Always accurate. Updated automatically as competitors evolve.</p>
                     <div class="demo-widget-wrapper battlecard-widget-wrapper">
